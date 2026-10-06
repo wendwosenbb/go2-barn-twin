@@ -1,0 +1,3 @@
+# Local settings (account ID, profile). Copy from config.env.example.
+config.env
+*.pem
