@@ -75,7 +75,21 @@ if ! command -v nvidia-ctk >/dev/null; then
   apt-get install -y nvidia-container-toolkit
 fi
 nvidia-ctk runtime configure --runtime=docker   # merges into daemon.json
-systemctl restart docker
+
+# --- 4b. Keep image layers on /data too ------------------------------------------
+# Recent Docker Engine stores image layers through containerd's image store,
+# under containerd's own root (/var/lib/containerd), NOT Docker's data-root.
+# Point containerd's root at the data volume as well.
+mkdir -p /data/containerd
+grep -q '^root *= *"/data/containerd"' /etc/containerd/config.toml 2>/dev/null \
+  || sed -i '1i root = "/data/containerd"' /etc/containerd/config.toml
+# Neither daemon may start before the data volume is mounted.
+for svc in containerd docker; do
+  mkdir -p "/etc/systemd/system/${svc}.service.d"
+  printf '[Unit]\nRequiresMountsFor=/data\n' > "/etc/systemd/system/${svc}.service.d/data-mount.conf"
+done
+systemctl daemon-reload
+systemctl restart containerd docker
 
 # --- 5. Tailscale --------------------------------------------------------------
 command -v tailscale >/dev/null || curl -fsSL https://tailscale.com/install.sh | sh
@@ -91,6 +105,9 @@ chown -R 1234:1234 /data/isaac-sim
 if [[ ! -f /var/lib/isaac-bootstrap.done ]]; then
   touch /var/lib/isaac-bootstrap.done
   echo "=== BOOTSTRAP DONE $(date -Is) (rebooting to load the NVIDIA driver)"
+  # `reboot` only asks systemd to reboot and returns at once; exit so the
+  # script doesn't run on and log a second "BOOTSTRAP DONE".
   reboot
+  exit 0
 fi
 echo "=== BOOTSTRAP DONE $(date -Is)"

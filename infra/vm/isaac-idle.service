@@ -1,0 +1,7 @@
+[Unit]
+Description=Power off the Isaac Sim workstation when idle
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/isaac-idle-check
