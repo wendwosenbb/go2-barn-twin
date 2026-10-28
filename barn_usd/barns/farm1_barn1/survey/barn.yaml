@@ -1,0 +1,56 @@
+# farm1_barn1 survey: the barn frame and shell dimensions.
+# Every position in equipment.csv is in this frame. Edit this file, never a .usda.
+# "?" marks a value still to be read from the corrected map (SURV-06).
+
+barn_id: farm1_barn1
+
+frame:
+  # Origin = the spot inside the barn where the robot started mapping (not the dock).
+  # The LIO map starts there, so map frame and barn frame share an origin up to the
+  # small correction in map_to_barn below.
+  origin: robot start pose of the mapping run, on the floor directly below the robot
+  x: along the barn length, parallel to the long walls, pointing the way the robot faced at start
+  y: across the barn, to the robot's left at start (right-handed with z up)
+  z: up; Z=0 is the floor at the origin
+  units: meters
+  yaw: degrees, counter-clockwise from +x, seen from above
+  # So the origin can be found again on a later visit: distances from the origin
+  # to fixed features, read from the map.
+  landmarks:
+    - {feature: "?", dx_m: "?", dy_m: "?"}   # e.g. nearest post
+    - {feature: "?", dx_m: "?", dy_m: "?"}   # e.g. end wall / side wall
+
+dimensions:
+  # Nominal 155 x 13 m; the measured values below are inside wall faces from the corrected map.
+  length_m: 155.3        # along x, end wall to end wall
+  width_m: 12.8          # along y, long wall to long wall
+  tolerance_length_m: "?"
+  tolerance_width_m: "?"
+  measured_between: inside wall faces
+  wall_height_m: 2.65    # ceiling at the long walls, extrapolated from 0.8 m in
+  ridge_height_m: 3.5    # ceiling at the centre line (y = -1.6), constant 3.45-3.52 along x
+
+# The barn in this frame. The origin is inside the barn, so the minimums are negative.
+# survey.py uses these to reject positions outside the barn.
+# x_max - x_min should equal length_m; y_max - y_min should equal width_m.
+extent:
+  x_min_m: -0.95         # end wall behind the start spot
+  x_max_m: 154.35
+  y_min_m: -8.02
+  y_max_m: 4.78
+
+# Raw LIO map frame -> barn frame (SURV-06, scripts/flatten_map.py). Not a rigid transform:
+# the map's floor bends down 2.6 m over the length (LIO pitch drift; the real floor is flat).
+#   1. rotate by yaw_deg about z through the origin (lines x up with the long walls)
+#   2. unbend along x: new z = height above the fitted floor f(x), new x = arc length along it
+# Anything recorded in the raw map frame (e.g. real robot poses) needs the same correction:
+# use BarnFrame in scripts/flatten_map.py. Full numbers and checks in the flatten report.
+map_to_barn:
+  raw_map_file: barn1full_map_consistent.pcd          # in survey/map/
+  corrected_map_file: barn1full_map_consistent_barn.las  # also _barn_bottom / _barn_top, split at 2.5 m
+  report: barn1full_map_consistent_flatten_report.json
+  yaw_deg: 1.605
+  floor_poly_highest_power_first: [3.6472258e-09, -1.0471710e-06, -1.7700866e-05, -3.1454275e-03, -0.11693514]
+  floor_z_at_origin_m: -0.117   # the lidar map origin was this high above the floor
+  max_floor_slope_deg: 1.71
+  floor_flatness_after_m: [-0.022, 0.026]   # 5th-95th percentile of floor height, along the whole barn

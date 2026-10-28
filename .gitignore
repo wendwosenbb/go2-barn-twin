@@ -218,3 +218,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+third_party/
+books_resources/
+learn-open-usd-tutorial/
+nvidia-open-usd-tutorial/
+pixar-usd-tutorial/

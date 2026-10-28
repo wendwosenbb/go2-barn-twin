@@ -1,0 +1,7 @@
+# Raw and corrected lidar data are too large for git; keep them on disk / the /data volume.
+barns/*/survey/map/*
+!barns/*/survey/map/.gitkeep
+
+# Visit photos are large too; keep them on disk next to the map.
+barns/*/survey/photos/*
+!barns/*/survey/photos/.gitkeep
