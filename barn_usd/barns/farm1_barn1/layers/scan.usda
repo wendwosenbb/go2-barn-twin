@@ -10,7 +10,7 @@ def Xform "World"
     def Xform "Scan" (
         customData = {
             dictionary barn = {
-                string source = "barn1full_map_consistent_barn.las"
+                string source = "barn1full-1970-01-02-00-25-28_barn_clean.las"
                 double voxelM = 0.03
             }
         }

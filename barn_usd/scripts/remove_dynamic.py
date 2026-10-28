@@ -13,16 +13,24 @@ mostly seen through are dropped.
 Pass 1 accumulates free/hit counts; pass 2 rebuilds the map from the scans in the
 barn frame (same BarnFrame correction as flatten_map.py) without dynamic points.
 
+Thin static things (feed tubes, drinker pipes, cables) fill only part of a 10 cm voxel,
+so rays passing beside them also count as "free". Points inside the envelope of a
+surveyed object (equipment.csv, barn.yaml walls) are therefore always kept: the
+walkers moved through the open aisles, not through the lines, bollards or walls.
+
 Usage (venv active, from barn_usd/):
     python scripts/remove_dynamic.py barns/farm1_barn1 barn1full-1970-01-02-00-25-28 \
         barn1full_map_consistent_flatten_report.json
 """
 import argparse
+import csv
 import json
+import math
 import sys
 from pathlib import Path
 
 import numpy as np
+import yaml
 from mcap.reader import make_reader
 from mcap_ros2.decoder import DecoderFactory
 
@@ -108,13 +116,48 @@ class Grid:
         self.free += np.bincount(f, minlength=self.size).astype(np.int32)
 
 
+# half-width (lines, fences, curtain) or radius (point items) of the kept envelope, m;
+# optional z band. Lines keep their full height: suspension cables hang above them.
+ENVELOPE = {
+    "feeder_line": (0.25, None), "drinker_line": (0.12, None),
+    "migration_fence": (0.2, (0.0, 0.8)), "brooding_curtain": (0.15, None),
+    "bollard": (0.35, None), "heater": (0.9, (0.8, 3.5)), "feed_hopper": (0.6, None),
+}
+WALL_MARGIN = 0.35
+
+
+def static_envelope(pts, survey: Path):
+    """True for points inside a surveyed static object's envelope or near the walls."""
+    ext = yaml.safe_load((survey / "barn.yaml").read_text())["extent"]
+    x, y, z = pts[:, 0], pts[:, 1], pts[:, 2]
+    keep = ((x < ext["x_min_m"] + WALL_MARGIN) | (x > ext["x_max_m"] - WALL_MARGIN)
+            | (y < ext["y_min_m"] + WALL_MARGIN) | (y > ext["y_max_m"] - WALL_MARGIN))
+    for r in csv.DictReader(open(survey / "equipment.csv")):
+        if r["asset_type"] not in ENVELOPE:
+            continue
+        width, zband = ENVELOPE[r["asset_type"]]
+        x0, y0 = float(r["x_m"]), float(r["y_m"])
+        inside = np.ones(len(pts), bool) if zband is None else (z > zband[0]) & (z < zband[1])
+        if r["length_m"]:
+            # segment from (x0, y0) along yaw: distance across it and position along it
+            a = math.radians(float(r["yaw_deg"]))
+            s = (x - x0) * math.cos(a) + (y - y0) * math.sin(a)
+            d = -(x - x0) * math.sin(a) + (y - y0) * math.cos(a)
+            inside &= (np.abs(d) < width) & (s > -0.5) & (s < float(r["length_m"]) + 0.5)
+        else:
+            inside &= np.hypot(x - x0, y - y0) < width
+        keep |= inside
+    return keep
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("barn_dir", type=Path)
     ap.add_argument("bag", help="bag folder inside <barn_dir>/survey/map/")
     ap.add_argument("report", help="flatten report inside <barn_dir>/survey/ (yaw + floor curve)")
-    ap.add_argument("--min-free", type=int, default=5, help="seen-through at least this many times")
-    ap.add_argument("--ratio", type=float, default=1.0, help="... and more than ratio x hits")
+    ap.add_argument("--min-free", type=int, default=8, help="seen-through at least this many times")
+    ap.add_argument("--ratio", type=float, default=1.5, help="... and more than ratio x hits")
+    ap.add_argument("--reuse-grid", action="store_true", help="skip pass 1, load map/dynamic_grid.npz")
     ap.add_argument("--split-height", type=float, default=2.5)
     args = ap.parse_args()
 
@@ -124,17 +167,21 @@ def main():
     bag = survey / "map" / args.bag
 
     grid, rng = Grid(), np.random.default_rng(0)
-    print("pass 1: ray casting")
-    for i, (xyzi, origin) in enumerate(read_bag(bag)):
-        pts = frame.apply(xyzi[:, :3])
-        o = frame.apply(origin[None, :])[0]
-        grid.add(pts, o, rng)
-        if i % 200 == 0:
-            print(f"  scan {i}", end="\r")
-    dynamic = (grid.free >= args.min_free) & (grid.free > args.ratio * grid.hit)
+    grid_file = survey / "map" / "dynamic_grid.npz"
+    if args.reuse_grid:
+        saved = np.load(grid_file)
+        grid.free, grid.hit = saved["free"], saved["hit"]
+    else:
+        print("pass 1: ray casting")
+        for i, (xyzi, origin) in enumerate(read_bag(bag)):
+            pts = frame.apply(xyzi[:, :3])
+            o = frame.apply(origin[None, :])[0]
+            grid.add(pts, o, rng)
+            if i % 200 == 0:
+                print(f"  scan {i}", end="\r")
+        np.savez_compressed(grid_file, free=grid.free, hit=grid.hit, lo=grid.lo, shape=grid.shape, voxel=grid.v)
+    dynamic = (grid.hit > 0) & (grid.free >= args.min_free) & (grid.free > args.ratio * grid.hit)
     print(f"\n{dynamic.sum():,} of {(grid.hit > 0).sum():,} occupied voxels are dynamic")
-    np.savez_compressed(survey / "map" / "dynamic_grid.npz", free=grid.free, hit=grid.hit,
-                        lo=grid.lo, shape=grid.shape, voxel=grid.v)
 
     print("pass 2: rebuilding the map without dynamic points")
     stem = args.bag
@@ -147,6 +194,7 @@ def main():
             idx = grid.index(pts)
             dyn = np.zeros(len(pts), bool)
             dyn[idx >= 0] = dynamic[idx[idx >= 0]]
+            dyn[dyn] &= ~static_envelope(pts[dyn], survey)
             s, inten = pts[~dyn], xyzi[~dyn, 3]
             low = s[:, 2] <= args.split_height
             write_points(writers[""], s, inten)
