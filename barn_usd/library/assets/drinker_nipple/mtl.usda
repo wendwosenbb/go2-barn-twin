@@ -1,0 +1,77 @@
+#usda 1.0
+(
+    defaultPrim = "DrinkerNipple"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+over Xform "DrinkerNipple"
+{
+    def Scope "Looks"
+    {
+        class "_mat_Plastic" (
+            prepend references = @../../materials/library.usda@</_mat_Plastic>
+        )
+        {
+        }
+
+        def Material "Yellow" (
+            prepend specializes = </DrinkerNipple/Looks/_mat_Plastic>
+        )
+        {
+            over "Shader"
+            {
+                color3f inputs:diffuseColor = (0.95, 0.72, 0.05)
+                float inputs:roughness = 0.45
+            }
+        }
+
+        def Material "Grey" (
+            prepend specializes = </DrinkerNipple/Looks/_mat_Plastic>
+        )
+        {
+            over "Shader"
+            {
+                color3f inputs:diffuseColor = (0.6, 0.61, 0.62)
+            }
+        }
+    }
+
+    over "Geom"
+    {
+        over "Full"
+        {
+            over "Cup" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </DrinkerNipple/Looks/Yellow>
+            }
+
+            over "Nipple" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </DrinkerNipple/Looks/Grey>
+            }
+        }
+
+        over "Proxy"
+        {
+            over "Cup" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </DrinkerNipple/Looks/Yellow>
+            }
+
+            over "Nipple" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </DrinkerNipple/Looks/Grey>
+            }
+        }
+    }
+}
+

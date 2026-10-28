@@ -1,0 +1,51 @@
+#usda 1.0
+(
+    defaultPrim = "FeederPan"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "FeederPan" (
+    assetInfo = {
+        dictionary barn = {
+            string pivot = "bottom centre of the pan"
+            string source = "TF-Broiler Pan1_AllCATPart.stp"
+        }
+        string name = "feeder_pan"
+        string version = "1"
+    }
+    kind = "component"
+    prepend payload = @./payload.usda@
+    variants = {
+        string lod = "full"
+    }
+    prepend variantSets = "lod"
+)
+{
+    custom string barn:assetType = "feeder_pan"
+    variantSet "lod" = {
+        "full" {
+            over "Geom"
+            {
+                over "Proxy" (
+                    active = false
+                )
+                {
+                }
+            }
+
+        }
+        "proxy" {
+            over "Geom"
+            {
+                over "Full" (
+                    active = false
+                )
+                {
+                }
+            }
+
+        }
+    }
+}
+

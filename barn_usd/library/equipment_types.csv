@@ -33,3 +33,5 @@ camera,CAMERA,
 fogger_line,FOGGER,
 floor_surface,FLOOR,
 dock,DOCK,
+bollard,BOLLARD,
+brooding_curtain,CURTAIN_BROOD,open|closed

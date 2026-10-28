@@ -1,0 +1,209 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "World"
+{
+    def Xform "Scan" (
+        customData = {
+            dictionary barn = {
+                string source = "barn1full_map_consistent_barn.las"
+                double voxelM = 0.03
+            }
+        }
+    )
+    {
+        uniform token purpose = "guide"
+
+        def Xform "Tile_000" (
+            customData = {
+                dictionary barn = {
+                    double2 xRangeM = (-10, 0)
+                }
+            }
+            prepend payload = @../scan/tile_000.usdc@
+        )
+        {
+        }
+
+        def Xform "Tile_001" (
+            customData = {
+                dictionary barn = {
+                    double2 xRangeM = (0, 10)
+                }
+            }
+            prepend payload = @../scan/tile_001.usdc@
+        )
+        {
+        }
+
+        def Xform "Tile_002" (
+            customData = {
+                dictionary barn = {
+                    double2 xRangeM = (10, 20)
+                }
+            }
+            prepend payload = @../scan/tile_002.usdc@
+        )
+        {
+        }
+
+        def Xform "Tile_003" (
+            customData = {
+                dictionary barn = {
+                    double2 xRangeM = (20, 30)
+                }
+            }
+            prepend payload = @../scan/tile_003.usdc@
+        )
+        {
+        }
+
+        def Xform "Tile_004" (
+            customData = {
+                dictionary barn = {
+                    double2 xRangeM = (30, 40)
+                }
+            }
+            prepend payload = @../scan/tile_004.usdc@
+        )
+        {
+        }
+
+        def Xform "Tile_005" (
+            customData = {
+                dictionary barn = {
+                    double2 xRangeM = (40, 50)
+                }
+            }
+            prepend payload = @../scan/tile_005.usdc@
+        )
+        {
+        }
+
+        def Xform "Tile_006" (
+            customData = {
+                dictionary barn = {
+                    double2 xRangeM = (50, 60)
+                }
+            }
+            prepend payload = @../scan/tile_006.usdc@
+        )
+        {
+        }
+
+        def Xform "Tile_007" (
+            customData = {
+                dictionary barn = {
+                    double2 xRangeM = (60, 70)
+                }
+            }
+            prepend payload = @../scan/tile_007.usdc@
+        )
+        {
+        }
+
+        def Xform "Tile_008" (
+            customData = {
+                dictionary barn = {
+                    double2 xRangeM = (70, 80)
+                }
+            }
+            prepend payload = @../scan/tile_008.usdc@
+        )
+        {
+        }
+
+        def Xform "Tile_009" (
+            customData = {
+                dictionary barn = {
+                    double2 xRangeM = (80, 90)
+                }
+            }
+            prepend payload = @../scan/tile_009.usdc@
+        )
+        {
+        }
+
+        def Xform "Tile_010" (
+            customData = {
+                dictionary barn = {
+                    double2 xRangeM = (90, 100)
+                }
+            }
+            prepend payload = @../scan/tile_010.usdc@
+        )
+        {
+        }
+
+        def Xform "Tile_011" (
+            customData = {
+                dictionary barn = {
+                    double2 xRangeM = (100, 110)
+                }
+            }
+            prepend payload = @../scan/tile_011.usdc@
+        )
+        {
+        }
+
+        def Xform "Tile_012" (
+            customData = {
+                dictionary barn = {
+                    double2 xRangeM = (110, 120)
+                }
+            }
+            prepend payload = @../scan/tile_012.usdc@
+        )
+        {
+        }
+
+        def Xform "Tile_013" (
+            customData = {
+                dictionary barn = {
+                    double2 xRangeM = (120, 130)
+                }
+            }
+            prepend payload = @../scan/tile_013.usdc@
+        )
+        {
+        }
+
+        def Xform "Tile_014" (
+            customData = {
+                dictionary barn = {
+                    double2 xRangeM = (130, 140)
+                }
+            }
+            prepend payload = @../scan/tile_014.usdc@
+        )
+        {
+        }
+
+        def Xform "Tile_015" (
+            customData = {
+                dictionary barn = {
+                    double2 xRangeM = (140, 150)
+                }
+            }
+            prepend payload = @../scan/tile_015.usdc@
+        )
+        {
+        }
+
+        def Xform "Tile_016" (
+            customData = {
+                dictionary barn = {
+                    double2 xRangeM = (150, 160)
+                }
+            }
+            prepend payload = @../scan/tile_016.usdc@
+        )
+        {
+        }
+    }
+}
+

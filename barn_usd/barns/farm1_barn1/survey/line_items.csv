@@ -1,0 +1,11 @@
+line_id,item_type,pitch_m,first_offset_m,count,pattern
+FEEDLINE_01,feeder_pan,0.686,0.66,217,inline
+FEEDLINE_02,feeder_pan,0.686,0.48,217,inline
+DRINKLINE_01,drinker_nipple,0.15,0.044,479,alternate
+DRINKLINE_02,drinker_nipple,0.15,0.093,478,alternate
+DRINKLINE_03,drinker_nipple,0.15,0.088,478,alternate
+DRINKLINE_04,drinker_nipple,0.15,0.077,477,alternate
+DRINKLINE_05,drinker_nipple,0.15,0.043,489,alternate
+DRINKLINE_06,drinker_nipple,0.15,0.068,488,alternate
+DRINKLINE_07,drinker_nipple,0.15,0.058,489,alternate
+DRINKLINE_08,drinker_nipple,0.15,0.073,489,alternate

@@ -1,0 +1,126 @@
+#usda 1.0
+(
+    defaultPrim = "FeederPan"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+over Xform "FeederPan"
+{
+    def Scope "Looks"
+    {
+        class "_mat_Plastic" (
+            prepend references = @../../materials/library.usda@</_mat_Plastic>
+        )
+        {
+        }
+
+        def Material "Yellow" (
+            prepend specializes = </FeederPan/Looks/_mat_Plastic>
+        )
+        {
+            over "Shader"
+            {
+                color3f inputs:diffuseColor = (0.95, 0.72, 0.05)
+                float inputs:roughness = 0.45
+            }
+        }
+
+        def Material "Grey" (
+            prepend specializes = </FeederPan/Looks/_mat_Plastic>
+        )
+        {
+            over "Shader"
+            {
+                color3f inputs:diffuseColor = (0.55, 0.56, 0.58)
+            }
+        }
+    }
+
+    over "Geom"
+    {
+        over "Full"
+        {
+            over "Bowl" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </FeederPan/Looks/Yellow>
+            }
+
+            over "Rim" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </FeederPan/Looks/Yellow>
+            }
+
+            over "Grill" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </FeederPan/Looks/Yellow>
+            }
+
+            over "Clip_1" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </FeederPan/Looks/Grey>
+            }
+
+            over "Clip_2" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </FeederPan/Looks/Grey>
+            }
+
+            over "Clip_3" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </FeederPan/Looks/Grey>
+            }
+
+            over "Clip_4" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </FeederPan/Looks/Grey>
+            }
+
+            over "Cone" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </FeederPan/Looks/Yellow>
+            }
+        }
+
+        over "Proxy"
+        {
+            over "Bowl" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </FeederPan/Looks/Yellow>
+            }
+
+            over "Grill" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </FeederPan/Looks/Yellow>
+            }
+
+            over "Tube" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </FeederPan/Looks/Yellow>
+            }
+        }
+    }
+}
+

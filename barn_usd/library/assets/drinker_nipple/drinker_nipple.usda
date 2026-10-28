@@ -1,0 +1,52 @@
+#usda 1.0
+(
+    defaultPrim = "DrinkerNipple"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "DrinkerNipple" (
+    assetInfo = {
+        dictionary barn = {
+            string pipeAxis = "x"
+            string pivot = "bottom centre of the drip cup"
+            string source = "Nipple_Drinker_clean.stl"
+        }
+        string name = "drinker_nipple"
+        string version = "1"
+    }
+    kind = "component"
+    prepend payload = @./payload.usda@
+    variants = {
+        string lod = "full"
+    }
+    prepend variantSets = "lod"
+)
+{
+    custom string barn:assetType = "drinker_nipple"
+    variantSet "lod" = {
+        "full" {
+            over "Geom"
+            {
+                over "Proxy" (
+                    active = false
+                )
+                {
+                }
+            }
+
+        }
+        "proxy" {
+            over "Geom"
+            {
+                over "Full" (
+                    active = false
+                )
+                {
+                }
+            }
+
+        }
+    }
+}
+

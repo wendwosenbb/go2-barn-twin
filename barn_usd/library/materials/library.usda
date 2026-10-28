@@ -1,0 +1,77 @@
+#usda 1.0
+(
+    defaultPrim = "_mat_Plastic"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Material "_mat_Plastic"
+{
+    token outputs:surface.connect = </_mat_Plastic/Shader.outputs:surface>
+
+    def Shader "Shader"
+    {
+        uniform token info:id = "UsdPreviewSurface"
+        color3f inputs:diffuseColor = (0.8, 0.8, 0.78)
+        float inputs:metallic = 0
+        float inputs:roughness = 0.55
+        token outputs:surface
+    }
+}
+
+def Material "_mat_Metal"
+{
+    token outputs:surface.connect = </_mat_Metal/Shader.outputs:surface>
+
+    def Shader "Shader"
+    {
+        uniform token info:id = "UsdPreviewSurface"
+        color3f inputs:diffuseColor = (0.62, 0.63, 0.64)
+        float inputs:metallic = 1
+        float inputs:roughness = 0.45
+        token outputs:surface
+    }
+}
+
+def Material "_mat_Concrete"
+{
+    token outputs:surface.connect = </_mat_Concrete/Shader.outputs:surface>
+
+    def Shader "Shader"
+    {
+        uniform token info:id = "UsdPreviewSurface"
+        color3f inputs:diffuseColor = (0.55, 0.54, 0.51)
+        float inputs:metallic = 0
+        float inputs:roughness = 0.9
+        token outputs:surface
+    }
+}
+
+def Material "_mat_Wood"
+{
+    token outputs:surface.connect = </_mat_Wood/Shader.outputs:surface>
+
+    def Shader "Shader"
+    {
+        uniform token info:id = "UsdPreviewSurface"
+        color3f inputs:diffuseColor = (0.55, 0.4, 0.26)
+        float inputs:metallic = 0
+        float inputs:roughness = 0.75
+        token outputs:surface
+    }
+}
+
+def Material "_mat_Bedding"
+{
+    token outputs:surface.connect = </_mat_Bedding/Shader.outputs:surface>
+
+    def Shader "Shader"
+    {
+        uniform token info:id = "UsdPreviewSurface"
+        color3f inputs:diffuseColor = (0.42, 0.3, 0.2)
+        float inputs:metallic = 0
+        float inputs:roughness = 0.95
+        token outputs:surface
+    }
+}
+

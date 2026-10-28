@@ -5,3 +5,6 @@ barns/*/survey/map/*
 # Visit photos are large too; keep them on disk next to the map.
 barns/*/survey/photos/*
 !barns/*/survey/photos/.gitkeep
+
+# Scan tiles are generated from the map by scripts/import_scan.py (binary, large).
+barns/*/scan/
