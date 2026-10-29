@@ -1,13 +1,16 @@
 """
 LIB-05 / LIB-06 (+ the line part of BARN-03): feeder and drinker lines with their
-pans and nipples, from the barn survey -> barns/<barn_id>/layers/lines.usda
+pans and nipples, from the barn survey -> barns/<barn_id>/layers/layout.usda
+(the line part of layout; BARN-03 adds the rest of equipment.csv to the same layer)
 
   survey/equipment.csv   one row per line: start (x, y), yaw, length, height
   survey/line_items.csv  per line: item asset, pitch, first offset, count, pattern
 
 Each line is an Xform at its start, rotated by its yaw, so items sit at (s, 0, z)
 along local +x. Every pan/nipple is an instanceable reference (design section 9):
-a real prim the robot can target (FEEDLINE_01/Pan_037), sharing one prototype.
+a real prim the robot can target (FeederLine_01/Pan_037), sharing one prototype.
+Lines and items inherit their library/classes.usda class (_class_FeederLine,
+_class_FeederPan, ...), so one `over` on the class reaches all of them.
 
 Usage (venv active, from barn_usd/):
     python scripts/build_lines.py barns/farm1_barn1
@@ -21,6 +24,7 @@ from pxr import Gf, Kind, Sdf, Usd, UsdGeom
 
 sys.path.insert(0, str(Path(__file__).parent))
 import usd_utils  # noqa: E402
+from build_classes import class_name  # noqa: E402
 
 # per line type: group prim, item prim prefix, item asset, pipe radius, pipe centre height
 LINE_TYPES = {
@@ -48,7 +52,7 @@ def main():
     lines = {r["id"]: r for r in csv.DictReader(open(survey / "equipment.csv")) if r["asset_type"] in LINE_TYPES}
     items = {r["line_id"]: r for r in csv.DictReader(open(survey / "line_items.csv"))}
 
-    out = args.barn_dir / "layers" / "lines.usda"
+    out = args.barn_dir / "layers" / "layout.usda"
     if out.exists():
         out.unlink()
     stage = usd_utils.new_layer(out)
@@ -63,8 +67,12 @@ def main():
         if not stage.GetPrimAtPath(group_path):
             Usd.ModelAPI(UsdGeom.Xform.Define(stage, group_path).GetPrim()).SetKind(Kind.Tokens.group)
         length, z = float(row["length_m"]), float(row["z_m"])
-        line = UsdGeom.Xform.Define(stage, group_path.AppendChild(line_id))
+        # prim name per design section 11: PascalCase + _NN (DRINKLINE_03 -> DrinkerLine_03)
+        name = "".join(w.capitalize() for w in row["asset_type"].split("_")) + "_" + line_id.split("_")[-1]
+        line = UsdGeom.Xform.Define(stage, group_path.AppendChild(name))
         Usd.ModelAPI(line.GetPrim()).SetKind(Kind.Tokens.group)
+        line.GetPrim().GetInherits().AddInherit(Sdf.Path("/" + class_name(row["asset_type"])))
+        line.GetPrim().CreateAttribute("barn:id", Sdf.ValueTypeNames.String, custom=True).Set(line_id)
         set_xform(line, (float(row["x_m"]), float(row["y_m"]), 0.0), float(row["yaw_deg"]))
         line.GetPrim().CreateAttribute("barn:assetType", Sdf.ValueTypeNames.String, custom=True).Set(row["asset_type"])
 
@@ -87,11 +95,12 @@ def main():
         for i in range(count):
             item = stage.DefinePrim(line.GetPath().AppendChild(f"{prefix}_{i + 1:03d}"))
             item.GetReferences().AddReference(ref)
+            item.GetInherits().AddInherit(Sdf.Path("/" + class_name(spec["item_type"])))
             item.SetInstanceable(True)
             # "alternate": every second nipple turned around, so its cup arm points the other way
             flip = 180.0 if spec["pattern"] == "alternate" and i % 2 else 0.0
             set_xform(item, (first + i * pitch, 0.0, z), ITEM_YAW[spec["item_type"]] + flip)
-        print(f"  {line_id}: {count} x {spec['item_type']} every {pitch} m")
+        print(f"  {name} ({line_id}): {count} x {spec['item_type']} every {pitch} m")
 
     stage.GetRootLayer().Save()
     print("->", out)

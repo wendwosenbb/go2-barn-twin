@@ -1,9 +1,11 @@
 #usda 1.0
 (
     defaultPrim = "FeederPan"
+    metersPerUnit = 1
     subLayers = [
         @./mtl.usda@,
         @./geo.usda@
     ]
+    upAxis = "Z"
 )
 

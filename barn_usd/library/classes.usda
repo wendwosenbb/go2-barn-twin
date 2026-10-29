@@ -1,0 +1,159 @@
+#usda 1.0
+(
+    defaultPrim = "_class_Post"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+class "_class_Post"
+{
+}
+
+class "_class_Truss"
+{
+}
+
+class "_class_Wall"
+{
+}
+
+class "_class_DoorEnd"
+{
+}
+
+class "_class_DoorService"
+{
+}
+
+class "_class_DoorTunnel"
+{
+}
+
+class "_class_TunnelFan"
+{
+}
+
+class "_class_SidewallFan"
+{
+}
+
+class "_class_CirculationFan"
+{
+}
+
+class "_class_CoolingPad"
+{
+}
+
+class "_class_AirInlet"
+{
+}
+
+class "_class_SidewallCurtain"
+{
+}
+
+class "_class_MigrationFence"
+{
+}
+
+class "_class_FeederLine"
+{
+}
+
+class "_class_FeedHopper"
+{
+}
+
+class "_class_FeedBin"
+{
+}
+
+class "_class_DrinkerLine"
+{
+}
+
+class "_class_Heater"
+{
+}
+
+class "_class_Light"
+{
+}
+
+class "_class_Winch"
+{
+}
+
+class "_class_ControlRoom"
+{
+}
+
+class "_class_ElectricalPanel"
+{
+}
+
+class "_class_ClimateController"
+{
+}
+
+class "_class_TempSensor"
+{
+}
+
+class "_class_HumiditySensor"
+{
+}
+
+class "_class_StaticPressureSensor"
+{
+}
+
+class "_class_GasSensor"
+{
+}
+
+class "_class_WaterMeter"
+{
+}
+
+class "_class_Medicator"
+{
+}
+
+class "_class_BirdScale"
+{
+}
+
+class "_class_Camera"
+{
+}
+
+class "_class_FoggerLine"
+{
+}
+
+class "_class_FloorSurface"
+{
+}
+
+class "_class_Dock"
+{
+}
+
+class "_class_Bollard"
+{
+}
+
+class "_class_BroodingCurtain"
+{
+}
+
+class "_class_FeederPan"
+{
+}
+
+class "_class_DrinkerNipple"
+{
+}
+

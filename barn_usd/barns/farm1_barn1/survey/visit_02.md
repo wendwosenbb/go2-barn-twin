@@ -38,6 +38,8 @@ Date: ________  Flock age (days): ________  Birds in house? yes / no
       (now: 26 cells per side, 0.99 m per cell incl. frame; pad band 0.35–1.75 m)
 - [ ] What sticks out 0.15 m from the y- wall above the cool cells (x 2–28)? ____ photo: `WALL_YNEG_01.jpg`
 - [ ] Bollards: diameter ____ m (now: 0.28–0.40), anything on top? ____
+- [ ] Wall thickness (at a door or opening): long walls ____ m, end walls ____ m (now: assumed 0.15 m)
+      and what they are made of: lower part ____ , upper part ____ (photo: `WALL_SECTION_01.jpg`)
 
 ## Ends of the lines (photograph each end)
 - [ ] Feeder lines, far end (x ≈ 151.7): motor / control pan / end cap? ____ `FEEDLINE_01_END.jpg`

@@ -1,0 +1,13 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    metersPerUnit = 1
+    subLayers = [
+        @./layers/sim_overrides.usda@,
+        @./layers/physics.usda@,
+        @./layers/semantics.usda@,
+        @./barn.usda@
+    ]
+    upAxis = "Z"
+)
+

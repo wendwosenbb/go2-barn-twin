@@ -1,0 +1,16 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    metersPerUnit = 1
+    subLayers = [
+        @./layers/lighting.usda@,
+        @./layers/looks.usda@,
+        @./layers/dressing.usda@,
+        @./layers/layout.usda@,
+        @./layers/shell.usda@,
+        @./layers/scan.usda@,
+        @../../library/classes.usda@
+    ]
+    upAxis = "Z"
+)
+

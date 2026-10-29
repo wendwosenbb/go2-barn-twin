@@ -102,6 +102,8 @@ def make_asset(name, root, asset_type, full, proxy, looks, info=None):
     pay.subLayerPaths.append("./mtl.usda")
     pay.subLayerPaths.append("./geo.usda")
     pay.defaultPrim = root  # the payload arc targets this prim
+    pay.pseudoRoot.SetInfo("upAxis", "Z")  # every layer carries units (design section 11)
+    pay.pseudoRoot.SetInfo("metersPerUnit", 1.0)
     pay.Save()
 
     # phys.usda: convex-hull colliders on the Full meshes (pulled in only by layers/physics.usda)

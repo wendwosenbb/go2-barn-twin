@@ -1,0 +1,81 @@
+#usda 1.0
+(
+    doc = "Cameras for the README images of the library assets and the scan. Regenerate with docs/render_showcase.sh."
+    defaultPrim = "World"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "World"
+{
+    def Xform "Pan" (references = @../barn_usd/library/assets/feeder_pan/feeder_pan.usda@)
+    {
+        double3 xformOp:translate = (100, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+    def Xform "PanProxy" (
+        references = @../barn_usd/library/assets/feeder_pan/feeder_pan.usda@
+        variants = { string lod = "proxy" }
+    )
+    {
+        double3 xformOp:translate = (100.5, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+    def Xform "Drinker" (references = @../barn_usd/library/assets/drinker_nipple/drinker_nipple.usda@)
+    {
+        double3 xformOp:translate = (200, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+    def Xform "DrinkerProxy" (
+        references = @../barn_usd/library/assets/drinker_nipple/drinker_nipple.usda@
+        variants = { string lod = "proxy" }
+    )
+    {
+        double3 xformOp:translate = (200.12, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+    def Xform "Scan" (references = @../barn_usd/barns/farm1_barn1/layers/scan.usda@)
+    {
+    }
+    def DistantLight "Sun"
+    {
+        float inputs:intensity = 3
+        float3 xformOp:rotateXYZ = (45, 0, 30)
+        uniform token[] xformOpOrder = ["xformOp:rotateXYZ"]
+    }
+    def Camera "PanCam"
+    {
+        float focalLength = 35
+        float2 clippingRange = (0.01, 50)
+        double3 xformOp:translate = (100.25, -1.1, 0.55)
+        float3 xformOp:rotateXYZ = (68, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ"]
+    }
+    def Camera "DrinkerCam"
+    {
+        float focalLength = 35
+        float2 clippingRange = (0.01, 50)
+        double3 xformOp:translate = (200.05, -0.38, 0.2)
+        float3 xformOp:rotateXYZ = (72, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ"]
+    }
+    def Camera "ScanBird"
+    {
+        float focalLength = 16
+        float2 clippingRange = (0.5, 1000)
+        double3 xformOp:translate = (-6, -16, 11)
+        float3 xformOp:rotateXYZ = (58, 0, -38)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ"]
+    }
+    def Camera "ScanCutaway"
+    {
+        # straight down from 20 m; the near plane at 17.6 m cuts away everything above z = 2.4
+        float focalLength = 18
+        float horizontalAperture = 36
+        float verticalAperture = 20.25
+        float2 clippingRange = (17.6, 100)
+        double3 xformOp:translate = (20, -1.6, 20)
+        float3 xformOp:rotateXYZ = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ"]
+    }
+}
