@@ -150,8 +150,7 @@ go2-barn-twin/
 │   ├── scripts/                      every generator, the validator and the lidar tools
 │   └── scratch/                      experiments
 ├── infra/                            AWS GPU workstation for Isaac Sim (see infra/README.md)
-├── docs/                             README images and the cameras that make them
-└── CLAUDE.md                         notes for AI coding assistants working in this repo
+└── docs/                             README images and the cameras that make them
 ```
 
 ## Quick start

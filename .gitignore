@@ -223,3 +223,6 @@ books_resources/
 learn-open-usd-tutorial/
 nvidia-open-usd-tutorial/
 pixar-usd-tutorial/
+
+# Notes for AI coding assistants: kept local
+CLAUDE.md
