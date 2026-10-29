@@ -65,7 +65,9 @@ def make_asset(name, root, asset_type, full, proxy, looks, info=None):
     geo = _fresh(folder / "geo.usda", root)
     UsdGeom.Scope.Define(geo, geom)
     for lod, parts in (("Full", full), ("Proxy", proxy)):
-        UsdGeom.Xform.Define(geo, geom.AppendChild(lod))
+        lod_prim = UsdGeom.Xform.Define(geo, geom.AppendChild(lod))
+        if lod == "Proxy":
+            lod_prim.CreatePurposeAttr(UsdGeom.Tokens.proxy)  # design section 11: LOD proxies
         for part in parts:
             _write_part(geo, geom.AppendChild(lod), part)
     geo.GetRootLayer().Save()

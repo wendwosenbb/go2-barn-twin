@@ -94,6 +94,8 @@ def Xform "FeederPan"
 
         def Xform "Proxy"
         {
+            uniform token purpose = "proxy"
+
             def Cylinder "Bowl"
             {
                 uniform token axis = "Z"
