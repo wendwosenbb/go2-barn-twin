@@ -14,6 +14,12 @@ info() { echo "==> $*"; }
 # shellcheck source=/dev/null
 source "$CONFIG"
 
+# Defaults for settings added after the first config.env was written, so an
+# older config.env keeps working.
+: "${VM_HOST:=isaac-sim-ws}"                   # tailnet hostname and ssh target
+: "${START_ROUNDS:=30}"                        # start attempts on no capacity (~30 min)
+: "${ROUND_WAIT:=60}"                          # seconds between attempts
+
 # Export so every `aws` call below uses the personal profile and region,
 # whatever the calling terminal has set.
 export AWS_PROFILE AWS_REGION
@@ -38,4 +44,36 @@ instance_id() {
     --filters "Name=tag:Name,Values=$NAME" \
               "Name=instance-state-name,Values=pending,running,stopping,stopped" \
     --query 'Reservations[].Instances[].InstanceId' --output text
+}
+
+# Instance ID, or exit with a hint if there is none.
+require_instance() {
+  local iid
+  iid="$(instance_id)"
+  [[ -n "$iid" ]] || die "no instance named '$NAME' (run provision.sh first)"
+  echo "$iid"
+}
+
+# One field of the instance, e.g. instance_field "$IID" State.Name
+instance_field() {
+  aws ec2 describe-instances --instance-ids "$1" \
+    --query "Reservations[0].Instances[0].$2" --output text
+}
+
+# Run a command on the VM over Tailscale SSH.
+vm() {
+  ssh -o ConnectTimeout=10 "ubuntu@${VM_HOST}" "$@"
+}
+
+# Wait until the VM answers on the tailnet (up to ~3 minutes after boot).
+wait_tailnet() {
+  local _
+  info "waiting for $VM_HOST on the tailnet"
+  for _ in $(seq 36); do
+    if tailscale ping -c 1 --timeout 5s "$VM_HOST" >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 5
+  done
+  die "$VM_HOST not reachable on the tailnet. Is this laptop on the right tailnet? (sudo tailscale switch <your-tailnet>)"
 }
