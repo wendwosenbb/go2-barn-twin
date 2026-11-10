@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Copy the on-VM tools in infra/vm/ to the workstation and install them:
 #   /usr/local/bin/isaac-run           start Isaac Sim headless
+#   /data/isaac-sim/work               saved scenes, mounted at /isaac-sim/work
 #   /usr/local/bin/isaac-idle-check    idle auto-shutdown check
 #   /etc/default/isaac-idle            its settings (only if not present yet)
 #   isaac-idle.service + .timer        run the check every 5 minutes
@@ -21,6 +22,7 @@ ssh "$HOST" 'sudo bash -s' <<'EOF'
 set -euo pipefail
 cd /tmp/vm-tools
 install -m 0755 isaac-run.sh        /usr/local/bin/isaac-run
+install -d -o 1234 -g 1234 /data/isaac-sim/work   # saved scenes (container UID 1234)
 install -m 0755 isaac-idle-check.sh /usr/local/bin/isaac-idle-check
 [ -f /etc/default/isaac-idle ] || install -m 0644 isaac-idle.conf /etc/default/isaac-idle
 install -m 0644 isaac-idle.service isaac-idle.timer /etc/systemd/system/

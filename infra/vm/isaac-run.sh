@@ -19,5 +19,6 @@ docker run -d --name isaac-sim --gpus all --network=host \
   -v "$CACHE/data:/isaac-sim/.local/share/ov/data:rw" \
   -v "$CACHE/pkg:/isaac-sim/.local/share/ov/pkg:rw" \
   -v "$CACHE/hub:/var/cache/hub:rw" \
+  -v "$CACHE/work:/isaac-sim/work:rw" \
   -u 1234:1234 \
   --entrypoint bash "$IMAGE" -c "./runheadless.sh -v $*"

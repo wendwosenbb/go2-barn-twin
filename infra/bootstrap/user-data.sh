@@ -96,7 +96,7 @@ command -v tailscale >/dev/null || curl -fsSL https://tailscale.com/install.sh |
 
 # --- 6. Isaac Sim cache directories --------------------------------------------
 # The container runs as UID 1234; its mount points must be writable by it.
-for d in cache/main cache/computecache cache/kit config data logs pkg hub; do
+for d in cache/main cache/computecache cache/kit config data logs pkg hub work; do
   mkdir -p "/data/isaac-sim/$d"
 done
 chown -R 1234:1234 /data/isaac-sim
