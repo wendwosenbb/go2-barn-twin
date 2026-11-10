@@ -1,0 +1,163 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    endTimeCode = 1000000
+    framesPerSecond = 60
+    metersPerUnit = 1
+    startTimeCode = 0
+    timeCodesPerSecond = 60
+    upAxis = "Z"
+)
+
+def Xform "World"
+{
+    def DistantLight "Light"
+    {
+        float inputs:intensity = 1000
+    }
+
+    def PhysicsScene "PhysicsScene"
+    {
+        vector3f physics:gravityDirection = (0, 0, -1)
+        float physics:gravityMagnitude = 9.81
+    }
+
+    def Plane "Ground" (
+        prepend apiSchemas = ["PhysicsCollisionAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double length = 30
+        double width = 30
+    }
+
+    def Xform "SimpleRobot" (
+        prepend apiSchemas = ["PhysicsArticulationRootAPI"]
+    )
+    {
+        double3 xformOp:translate = (0, 0, 0.375)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+
+        def Cube "Cube" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            double size = 1
+            float3 xformOp:scale = (2, 1, 0.5)
+            uniform token[] xformOpOrder = ["xformOp:scale"]
+        }
+
+        def Cylinder "front_left_wheel" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            double height = 1
+            double radius = 0.5
+            float3 xformOp:rotateXYZ = (90, 0, 0)
+            float3 xformOp:scale = (0.75, 0.75, 0.25)
+            double3 xformOp:translate = (0.5, 0.75, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        }
+
+        def Cylinder "front_right_wheel" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            double height = 1
+            double radius = 0.5
+            float3 xformOp:rotateXYZ = (90, 0, 0)
+            float3 xformOp:scale = (0.75, 0.75, 0.25)
+            double3 xformOp:translate = (0.5, -0.75, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        }
+
+        def Cylinder "back_left_wheel" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            double height = 1
+            double radius = 0.5
+            float3 xformOp:rotateXYZ = (90, 0, 0)
+            float3 xformOp:scale = (0.75, 0.75, 0.25)
+            double3 xformOp:translate = (-0.5, 0.75, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        }
+
+        def Cylinder "back_right_wheel" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            double height = 1
+            double radius = 0.5
+            float3 xformOp:rotateXYZ = (90, 0, 0)
+            float3 xformOp:scale = (0.75, 0.75, 0.25)
+            double3 xformOp:translate = (-0.5, -0.75, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        }
+
+        def PhysicsRevoluteJoint "FrontLeftJoint"
+        {
+            uniform token physics:axis = "Y"
+            rel physics:body0 = </World/SimpleRobot/Cube>
+            rel physics:body1 = </World/SimpleRobot/front_left_wheel>
+            point3f physics:localPos0 = (0.25, 0.75, 0)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (0.70710677, -0.70710677, -0, -0)
+            float physics:lowerLimit = -inf
+            float physics:upperLimit = inf
+        }
+
+        def PhysicsRevoluteJoint "FrontRightJoint"
+        {
+            uniform token physics:axis = "Y"
+            rel physics:body0 = </World/SimpleRobot/Cube>
+            rel physics:body1 = </World/SimpleRobot/front_right_wheel>
+            point3f physics:localPos0 = (0.25, -0.75, 0)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (0.70710677, -0.70710677, -0, -0)
+            float physics:lowerLimit = -inf
+            float physics:upperLimit = inf
+        }
+
+        def PhysicsRevoluteJoint "BackLeftJoint" (
+            prepend apiSchemas = ["PhysicsDriveAPI:angular"]
+        )
+        {
+            float drive:angular:physics:damping = 10000
+            float drive:angular:physics:stiffness = 0
+            float drive:angular:physics:targetVelocity = 50
+            uniform token drive:angular:physics:type = "force"
+            uniform token physics:axis = "Y"
+            rel physics:body0 = </World/SimpleRobot/Cube>
+            rel physics:body1 = </World/SimpleRobot/back_left_wheel>
+            point3f physics:localPos0 = (-0.25, 0.75, 0)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (0.70710677, -0.70710677, -0, -0)
+            float physics:lowerLimit = -inf
+            float physics:upperLimit = inf
+        }
+
+        def PhysicsRevoluteJoint "BackRightJoint" (
+            prepend apiSchemas = ["PhysicsDriveAPI:angular"]
+        )
+        {
+            float drive:angular:physics:damping = 10000
+            float drive:angular:physics:stiffness = 0
+            float drive:angular:physics:targetVelocity = 50
+            uniform token drive:angular:physics:type = "force"
+            uniform token physics:axis = "Y"
+            rel physics:body0 = </World/SimpleRobot/Cube>
+            rel physics:body1 = </World/SimpleRobot/back_right_wheel>
+            point3f physics:localPos0 = (-0.25, -0.75, 0)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (0.70710677, -0.70710677, -0, -0)
+            float physics:lowerLimit = -inf
+            float physics:upperLimit = inf
+        }
+    }
+}
+
