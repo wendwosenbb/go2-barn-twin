@@ -99,6 +99,7 @@ def Xform "World"
     {
         vector3f physics:gravityDirection = (0, 0, -1)
         float physics:gravityMagnitude = 9.81
+        uint physxScene:timeStepsPerSecond = 200
     }
 
     def Plane "Ground" (
@@ -115,7 +116,7 @@ def Xform "World"
     }
 
     def Xform "Go2" (
-        prepend references = @/isaac-sim/work/go2_py/go2_description/go2_description.usda@
+        prepend references = @/isaac-sim/work/go2_py/go2_description_norotor/go2_description_norotor.usda@
         variants = {
             string Physics = "physx"
         }
