@@ -1,0 +1,31 @@
+
+===== Mine: 260 prims, 12 revolute joints, 14 fixed joints
+  FL_hip_joint    stiffness   1.000 ( 57.30/rad)  damping   0.020 (  1.15/rad)  maxForce   23.70  limits [ -60.00,   60.00] deg
+  FL_thigh_joint  stiffness   1.000 ( 57.30/rad)  damping   0.020 (  1.15/rad)  maxForce   23.70  limits [ -90.00,  200.00] deg
+  FL_calf_joint   stiffness   1.000 ( 57.30/rad)  damping   0.020 (  1.15/rad)  maxForce   45.43  limits [-156.00,  -48.00] deg
+  mass: total 15.02 kg (authored on rigid bodies), base 6.921000003814697 kg
+  FL foot collider: Sphere radius 0.022  (/World/Mine/Geometry/base/FL_hip/FL_thigh/FL_calf/FL_foot/sphere)
+
+===== NV_Robots: 283 prims, 12 revolute joints, 4 fixed joints
+  FL_hip_joint    stiffness  79.618 (4561.76/rad)  damping   0.032 (  1.82/rad)  maxForce   23.70  limits [ -60.00,   60.00] deg
+  FL_thigh_joint  stiffness  31.215 (1788.51/rad)  damping   0.012 (  0.72/rad)  maxForce   23.70  limits [ -90.00,  200.00] deg
+  FL_calf_joint   stiffness  21.368 (1224.29/rad)  damping   0.009 (  0.49/rad)  maxForce   45.43  limits [-156.00,  -48.00] deg
+  mass: total 15.02 kg (authored on rigid bodies), base 6.921000003814697 kg
+  FL foot collider: Sphere radius 0.02199999988079071  (/World/NV_Robots/FL_foot/collisions/mesh_0/sphere)
+
+===== NV_IsaacLab: 236 prims, 12 revolute joints, 6 fixed joints
+  FL_hip_joint    stiffness   0.000 (  0.00/rad)  damping   0.000 (  0.00/rad)  maxForce   23.70  limits [ -60.00,   60.00] deg
+  FL_thigh_joint  stiffness   0.000 (  0.00/rad)  damping   0.000 (  0.00/rad)  maxForce   23.70  limits [ -90.00,  200.00] deg
+  FL_calf_joint   stiffness   0.000 (  0.00/rad)  damping   0.000 (  0.00/rad)  maxForce   45.43  limits [-156.00,  -48.00] deg
+  mass: total 15.02 kg (authored on rigid bodies), base 6.921000003814697 kg
+  FL foot collider: Sphere radius 0.02199999988079071  (/World/NV_IsaacLab/FL_foot/collisions/mesh_0)
+
+===== NV_Multiphysics: 318 prims, 12 revolute joints, 4 fixed joints
+  FL_hip_joint    stiffness  79.618 (4561.76/rad)  damping   0.032 (  1.82/rad)  maxForce   23.70  limits [ -60.00,   60.00] deg
+  FL_thigh_joint  stiffness  31.215 (1788.51/rad)  damping   0.012 (  0.72/rad)  maxForce   23.70  limits [ -90.00,  200.00] deg
+  FL_calf_joint   stiffness  21.368 (1224.29/rad)  damping   0.009 (  0.49/rad)  maxForce   45.43  limits [-156.00,  -48.00] deg
+  mass: total 15.02 kg (authored on rigid bodies), base 6.921000003814697 kg
+  FL foot collider: Sphere radius 0.02199999988079071  (/World/NV_Multiphysics/FL_foot/collisions/mesh_0/sphere)
+
+Done. Compare rows: gains (per rad), maxForce, limits, total mass, foot shape.
+Report saved to /isaac-sim/work/lesson3_compare_go2.txt
