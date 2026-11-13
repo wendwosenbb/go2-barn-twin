@@ -2,7 +2,9 @@
 BARN-01: build one barn -> barns/<barn_id>/barn.usda + barn_sim.usda
 
 1. generated layers from the survey: layers/shell.usda (build_shell.py),
-   layers/layout.usda (build_lines.py; BARN-03 adds the rest of equipment.csv)
+   layers/layout.usda (build_lines.py; BARN-03 adds the rest of equipment.csv),
+   layers/lighting.usda (build_lighting.py: daylight, outdoor ground, placeholder lamps),
+   layers/physics.usda (build_physics.py: physics scene, shell and ground colliders)
 2. every other layer of the stack created empty if missing; existing files are kept
    (sim_overrides.usda is hand-edited, the others get their builders later)
 3. entry files with sublayer lists only, in design section 5's order (strongest first)
@@ -49,7 +51,7 @@ def main():
     args = ap.parse_args()
     barn, layers = args.barn_dir, args.barn_dir / "layers"
 
-    for script in ("build_shell.py", "build_lines.py"):
+    for script in ("build_shell.py", "build_lines.py", "build_lighting.py", "build_physics.py"):
         print(f"== {script}")
         subprocess.run([sys.executable, str(SCRIPTS / script), str(barn)], check=True)
 

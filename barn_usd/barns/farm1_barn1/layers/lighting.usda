@@ -7,5 +7,595 @@
 
 def Xform "World"
 {
+    def Xform "Environment"
+    {
+        def DomeLight "Sky"
+        {
+            color3f inputs:color = (0.7, 0.8, 1)
+            float inputs:intensity = 1000
+        }
+
+        def DistantLight "Sun"
+        {
+            float inputs:angle = 0.53
+            color3f inputs:color = (1, 0.96, 0.9)
+            float inputs:intensity = 3000
+            float3 xformOp:rotateXYZ = (0, 45, 30)
+            uniform token[] xformOpOrder = ["xformOp:rotateXYZ"]
+        }
+
+        def Mesh "Ground"
+        {
+            custom bool barn:allowBelowFloor = 1
+            float3[] extent = [(-50.95, -58.02, -0.02), (204.35, 54.78, -0.02)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 2, 3]
+            point3f[] points = [(-50.95, -58.02, -0.02), (204.35, -58.02, -0.02), (204.35, 54.78, -0.02), (-50.95, 54.78, -0.02)]
+            color3f[] primvars:displayColor = [(0.36, 0.33, 0.27)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def "Barn"
+    {
+        def Xform "Lights" (
+            customData = {
+                dictionary barn = {
+                    string source = "placeholder until survey/visit_02.md (lights)"
+                }
+            }
+        )
+        {
+            def SphereLight "Lamp_R0_00"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (2.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_01"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (8.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_02"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (14.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_03"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (20.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_04"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (26.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_05"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (32.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_06"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (38.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_07"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (44.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_08"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (50.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_09"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (56.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_10"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (62.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_11"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (68.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_12"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (74.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_13"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (80.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_14"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (86.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_15"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (92.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_16"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (98.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_17"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (104.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_18"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (110.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_19"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (116.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_20"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (122.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_21"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (128.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_22"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (134.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_23"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (140.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R0_24"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (146.05, -4.82, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_00"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (2.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_01"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (8.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_02"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (14.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_03"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (20.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_04"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (26.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_05"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (32.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_06"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (38.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_07"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (44.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_08"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (50.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_09"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (56.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_10"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (62.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_11"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (68.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_12"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (74.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_13"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (80.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_14"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (86.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_15"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (92.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_16"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (98.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_17"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (104.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_18"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (110.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_19"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (116.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_20"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (122.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_21"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (128.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_22"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (134.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_23"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (140.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def SphereLight "Lamp_R1_24"
+            {
+                custom bool barn:placeholder = 1
+                color3f inputs:color = (1, 0.93, 0.8)
+                float inputs:exposure = 4
+                float inputs:intensity = 30000
+                float inputs:radius = 0.06
+                double3 xformOp:translate = (146.05, 1.5800000000000005, 2.3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+        }
+    }
 }
 
