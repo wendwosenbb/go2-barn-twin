@@ -30,6 +30,9 @@ SCRIPTS = Path(__file__).parent
 RENDER_STACK = ["lighting", "looks", "dressing", "layout", "shell"]  # strongest first
 SIM_STACK = ["sim_overrides", "physics", "semantics"]
 CLASSES = "../../library/classes.usda"  # relative to barns/<id>/
+START_TIME_CODE = 0                     # timeline range written into both entry files
+END_TIME_CODE = 1_000_000               # effectively endless (Kit's default for new stages)
+TIME_CODES_PER_SECOND = 60
 
 
 def entry_layer(path: Path, sublayers):
@@ -40,6 +43,14 @@ def entry_layer(path: Path, sublayers):
     layer.defaultPrim = "World"
     layer.pseudoRoot.SetInfo("upAxis", "Z")
     layer.pseudoRoot.SetInfo("metersPerUnit", 1.0)
+    # Timeline range, as Kit writes for stages it creates. Without it USD falls back to a
+    # one-frame timeline (start = end = 0): physics stepped by a script still runs, but
+    # anything driven by the timeline (OmniGraph ticks, accumulating sensors, ROS clock)
+    # sees no time pass.
+    layer.startTimeCode = START_TIME_CODE
+    layer.endTimeCode = END_TIME_CODE
+    layer.timeCodesPerSecond = TIME_CODES_PER_SECOND
+    layer.framesPerSecond = TIME_CODES_PER_SECOND
     for sub in sublayers:
         layer.subLayerPaths.append(sub)
     layer.Save()
