@@ -1,0 +1,19 @@
+
+Files:             lesson5_drive_0.mcap
+Bag size:          150.7 MiB
+Storage id:        mcap
+ROS Distro:        jazzy
+Duration:          8.580541193s
+Start:             Nov 15 2026 21:47:31.934062149 (1794779251.934062149)
+End:               Nov 15 2026 21:47:40.514603342 (1794779260.514603342)
+Messages:          1141
+Topic information: Topic: /camera_info | Type: sensor_msgs/msg/CameraInfo | Count: 170 | Serialization Format: cdr
+                   Topic: /clock | Type: rosgraph_msgs/msg/Clock | Count: 172 | Serialization Format: cdr
+                   Topic: /cmd_vel | Type: geometry_msgs/msg/Twist | Count: 86 | Serialization Format: cdr
+                   Topic: /image_raw | Type: sensor_msgs/msg/Image | Count: 170 | Serialization Format: cdr
+                   Topic: /odom | Type: nav_msgs/msg/Odometry | Count: 171 | Serialization Format: cdr
+                   Topic: /scan | Type: sensor_msgs/msg/LaserScan | Count: 28 | Serialization Format: cdr
+                   Topic: /tf | Type: tf2_msgs/msg/TFMessage | Count: 172 | Serialization Format: cdr
+                   Topic: /tf_static | Type: tf2_msgs/msg/TFMessage | Count: 172 | Serialization Format: cdr
+Service:           0
+Service information: 
