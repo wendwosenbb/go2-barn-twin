@@ -6,7 +6,7 @@ def rigid(prim):
     UsdPhysics.RigidBodyAPI.Apply(prim) # allows gravity from the scene to apply to this prim
     UsdPhysics.CollisionAPI.Apply(prim) # allows collision physics to apply
 
-stage_path = "isaac_sim/unit2/simple_robot_four_wheel_py.usda"
+stage_path = "isaac_sim/unit2/lesson1_simple_robot/simple_robot_four_wheel_py.usda"
 
 #create and setup a stage
 
