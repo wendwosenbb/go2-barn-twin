@@ -1,0 +1,51 @@
+[base] stage as authored: timeCodesPerSecond 60.0, framesPerSecond 60.0
+[base] stage now: timeCodesPerSecond 60.0, framesPerSecond 60.0
+[base] timeline.get_time_codes_per_seconds(): 60.0
+[base] timeline.get_target_framerate(): 60.0
+[base] physics dt 0.0050 s
+[base] frame step (sim time per frame)  0.01667 s  = 1/60.00
+[base] timeline time per frame          0.01667 s
+[base] physics steps per frame          3.33
+[base] wall time per frame              0.0170 s
+[base] RTF                              0.98
+[tcps1] stage as authored: timeCodesPerSecond 60.0, framesPerSecond 60.0
+[tcps1] stage now: timeCodesPerSecond 1.0, framesPerSecond 60.0
+[tcps1] timeline.get_time_codes_per_seconds(): 1.0
+[tcps1] timeline.get_target_framerate(): 60.0
+[tcps1] physics dt 0.0050 s
+[tcps1] frame step (sim time per frame)  0.01667 s  = 1/60.00
+[tcps1] timeline time per frame          0.01667 s
+[tcps1] physics steps per frame          3.33
+[tcps1] wall time per frame              0.0288 s
+[tcps1] RTF                              0.58
+[fps1] stage as authored: timeCodesPerSecond 60.0, framesPerSecond 60.0
+[fps1] stage now: timeCodesPerSecond 60.0, framesPerSecond 1.0
+[fps1] timeline.get_time_codes_per_seconds(): 60.0
+[fps1] timeline.get_target_framerate(): 60.0
+[fps1] physics dt 0.0050 s
+[fps1] frame step (sim time per frame)  0.01667 s  = 1/60.00
+[fps1] timeline time per frame          0.01667 s
+[fps1] physics steps per frame          3.33
+[fps1] wall time per frame              0.0289 s
+[fps1] RTF                              0.58
+[tl_fps1] stage as authored: timeCodesPerSecond 60.0, framesPerSecond 60.0
+[tl_fps1] stage now: timeCodesPerSecond 60.0, framesPerSecond 60.0
+[tl_fps1] timeline.get_time_codes_per_seconds(): 60.0
+[tl_fps1] timeline.get_target_framerate(): 1.0
+[tl_fps1] physics dt 0.0050 s
+[tl_fps1] frame step (sim time per frame)  0.01667 s  = 1/60.00
+[tl_fps1] timeline time per frame          0.01667 s
+[tl_fps1] physics steps per frame          3.33
+[tl_fps1] wall time per frame              0.0284 s
+[tl_fps1] RTF                              0.59
+[rm_dt1] stage as authored: timeCodesPerSecond 60.0, framesPerSecond 60.0
+[rm_dt1] RenderingManager.get_dt(): 1.0
+[rm_dt1] stage now: timeCodesPerSecond 1.0, framesPerSecond 60.0
+[rm_dt1] timeline.get_time_codes_per_seconds(): 1.0
+[rm_dt1] timeline.get_target_framerate(): 60.0
+[rm_dt1] physics dt 0.0050 s
+[rm_dt1] frame step (sim time per frame)  0.03000 s  = 1/33.33
+[rm_dt1] timeline time per frame          1.00000 s
+[rm_dt1] physics steps per frame          6.00
+[rm_dt1] wall time per frame              0.0430 s
+[rm_dt1] RTF                              0.70

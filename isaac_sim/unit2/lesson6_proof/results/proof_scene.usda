@@ -1,0 +1,916 @@
+#usda 1.0
+(
+    customLayerData = {
+        dictionary omni_layer = {
+            dictionary locked = {
+            }
+            dictionary muteness = {
+            }
+        }
+    }
+    defaultPrim = "World"
+    endTimeCode = 1000000
+    framesPerSecond = 60
+    metersPerUnit = 1
+    startTimeCode = 0
+    subLayers = [
+        @./barn_usd/barns/farm1_barn1/layers/sim_overrides.usda@,
+        @./barn_usd/barns/farm1_barn1/layers/physics.usda@,
+        @./barn_usd/barns/farm1_barn1/layers/semantics.usda@,
+        @./barn_usd/barns/farm1_barn1/barn.usda@
+    ]
+    timeCodesPerSecond = 60
+    upAxis = "Z"
+)
+
+def "Render" (
+    hide_in_stage_window = true
+    no_delete = true
+)
+{
+    def "OmniverseKit"
+    {
+        def "HydraTextures" (
+            hide_in_stage_window = true
+            no_delete = true
+        )
+        {
+            def RenderProduct "omni_kit_widget_viewport_ViewportTexture_0" (
+                prepend apiSchemas = ["OmniRtxSettingsCommonAdvancedAPI_1", "OmniRtxSettingsRtAdvancedAPI_1", "OmniRtxSettingsPtAdvancedAPI_1", "OmniRtxSettingsParticleFieldAPI_1", "OmniRtxPostColorGradingAPI_1", "OmniRtxPostChromaticAberrationAPI_1", "OmniRtxPostBloomPhysicalAPI_1", "OmniRtxPostMatteObjectAPI_1", "OmniRtxPostCompositingAPI_1", "OmniRtxPostDofAPI_1", "OmniRtxPostMotionBlurAPI_1", "OmniRtxPostTvNoiseAPI_1", "OmniRtxPostTonemapIrayReinhardAPI_1", "OmniRtxPostDebugSettingsAPI_1", "OmniRtxDebugSettingsAPI_1"]
+                hide_in_stage_window = true
+                no_delete = true
+            )
+            {
+                rel camera = </OmniverseKit_Persp>
+                token omni:rtx:ambientOcclusion:denoiserMode = "none"
+                token omni:rtx:background:source:texture:textureMode = "repeatMirrored"
+                token omni:rtx:background:source:type = "domeLight"
+                bool omni:rtx:debug:view:pixelDebug:enableFixedTextPos = 1
+                token omni:rtx:directLighting:sampledLighting:denoisingTechnique = "None"
+                bool omni:rtx:dlss:frameGeneration = 0
+                bool omni:rtx:indirectDiffuse:denoiser:enabled = 0
+                bool omni:rtx:material:db:syncLoads = 1
+                token omni:rtx:post:dlss:execMode = "performance"
+                bool omni:rtx:post:registeredCompositing:invertColorCorrection = 1
+                bool omni:rtx:post:registeredCompositing:invertToneMap = 1
+                bool omni:rtx:pt:adaptiveSampling:filterError = 0
+                uint omni:rtx:pt:adaptiveSampling:fixedSppIterations = 2
+                int omni:rtx:pt:clampSpp = 64
+                uint omni:rtx:pt:limits:maxBounces = 3
+                uint omni:rtx:pt:limits:maxGlossyBounces = 3
+                uint omni:rtx:pt:maxSamplesPerLaunch = 2073600
+                uint omni:rtx:pt:mgpu:maxPixelsPerRegionExponent = 12
+                int omni:rtx:pt:samplesPerIteration = 64
+                uint omni:rtx:pt:samplesPerPixel = 64
+                bool omni:rtx:reflections:denoiser:enabled = 0
+                token omni:rtx:rendermode = "RealTimePathTracing"
+                color3f omni:rtx:rt:ambientLight:color = (0.1, 0.1, 0.1)
+                bool omni:rtx:rt:demoire = 0
+                bool omni:rtx:rt:ecoMode:enabled
+                bool omni:rtx:rt:lightcache:spatialCache:dontResolveConflicts = 1
+                int omni:rtx:rt:sss:samples = 1
+                uint omni:rtx:rtpt:maxVolumeBounces = 15
+                float omni:rtx:rtpt:modulatingRoughnessThreshold = 0.08
+                bool omni:rtx:scene:hydra:materialSyncLoads = 1
+                bool omni:rtx:scene:hydra:mdlMaterialWarmup = 1
+                rel orderedVars = </Render/Vars/LdrColor>
+                custom bool overrideClipRange = 0
+                uniform int2 resolution = (1280, 720)
+            }
+
+            def RenderProduct "Replicator" (
+                prepend apiSchemas = ["OmniRtxSettingsCommonAdvancedAPI_1", "OmniRtxSettingsRtAdvancedAPI_1", "OmniRtxSettingsPtAdvancedAPI_1", "OmniRtxSettingsParticleFieldAPI_1", "OmniRtxPostColorGradingAPI_1", "OmniRtxPostChromaticAberrationAPI_1", "OmniRtxPostBloomPhysicalAPI_1", "OmniRtxPostMatteObjectAPI_1", "OmniRtxPostCompositingAPI_1", "OmniRtxPostDofAPI_1", "OmniRtxPostMotionBlurAPI_1", "OmniRtxPostTvNoiseAPI_1", "OmniRtxPostTonemapIrayReinhardAPI_1", "OmniRtxPostDebugSettingsAPI_1", "OmniRtxDebugSettingsAPI_1"]
+                hide_in_stage_window = true
+                no_delete = true
+            )
+            {
+                rel camera = </World/Carter/Geometry/chassis_link/Front_Sensor/Camera>
+                custom string ogPostProcessPath = "/Render/OmniverseKit/HydraTextures/Replicator/PostRender"
+                bool omni:rtx:material:db:syncLoads = 1
+                int omni:rtx:pt:clampSpp = 64
+                int omni:rtx:pt:samplesPerIteration = 64
+                uint omni:rtx:pt:samplesPerPixel = 64
+                bool omni:rtx:rt:ecoMode:enabled
+                bool omni:rtx:scene:hydra:materialSyncLoads = 1
+                rel orderedVars = [
+                    </Render/Vars/LdrColorSD>,
+                    </Render/Vars/LdrColor>,
+                ]
+                custom bool overrideClipRange = 0
+                uniform int2 resolution = (640, 480)
+            }
+
+            def RenderProduct "Replicator_01" (
+                prepend apiSchemas = ["OmniRtxSettingsCommonAdvancedAPI_1", "OmniRtxSettingsRtAdvancedAPI_1", "OmniRtxSettingsPtAdvancedAPI_1", "OmniRtxSettingsParticleFieldAPI_1", "OmniRtxPostColorGradingAPI_1", "OmniRtxPostChromaticAberrationAPI_1", "OmniRtxPostBloomPhysicalAPI_1", "OmniRtxPostMatteObjectAPI_1", "OmniRtxPostCompositingAPI_1", "OmniRtxPostDofAPI_1", "OmniRtxPostMotionBlurAPI_1", "OmniRtxPostTvNoiseAPI_1", "OmniRtxPostTonemapIrayReinhardAPI_1", "OmniRtxPostDebugSettingsAPI_1", "OmniRtxDebugSettingsAPI_1"]
+                hide_in_stage_window = true
+                no_delete = true
+            )
+            {
+                rel camera = </World/Carter/Geometry/chassis_link/Front_Sensor/Lidar>
+                custom string ogPostProcessPath = "/Render/OmniverseKit/HydraTextures/Replicator_01/PostRender"
+                bool omni:rtx:material:db:syncLoads = 1
+                int omni:rtx:pt:clampSpp = 64
+                int omni:rtx:pt:samplesPerIteration = 64
+                uint omni:rtx:pt:samplesPerPixel = 64
+                bool omni:rtx:rt:ecoMode:enabled
+                bool omni:rtx:scene:hydra:materialSyncLoads = 1
+                rel orderedVars = </Render/Vars/GenericModelOutput>
+                custom bool overrideClipRange = 0
+                uniform int2 resolution = (1280, 720)
+            }
+
+            def RenderProduct "Replicator_02" (
+                prepend apiSchemas = ["OmniRtxSettingsCommonAdvancedAPI_1", "OmniRtxSettingsRtAdvancedAPI_1", "OmniRtxSettingsPtAdvancedAPI_1", "OmniRtxSettingsParticleFieldAPI_1", "OmniRtxPostColorGradingAPI_1", "OmniRtxPostChromaticAberrationAPI_1", "OmniRtxPostBloomPhysicalAPI_1", "OmniRtxPostMatteObjectAPI_1", "OmniRtxPostCompositingAPI_1", "OmniRtxPostDofAPI_1", "OmniRtxPostMotionBlurAPI_1", "OmniRtxPostTvNoiseAPI_1", "OmniRtxPostTonemapIrayReinhardAPI_1", "OmniRtxPostDebugSettingsAPI_1", "OmniRtxDebugSettingsAPI_1"]
+                hide_in_stage_window = true
+                no_delete = true
+            )
+            {
+                rel camera = </World/Carter/Geometry/chassis_link/ChaseCam>
+                custom string ogPostProcessPath = "/Render/OmniverseKit/HydraTextures/Replicator_02/PostRender"
+                bool omni:rtx:material:db:syncLoads = 1
+                int omni:rtx:pt:clampSpp = 64
+                int omni:rtx:pt:samplesPerIteration = 64
+                uint omni:rtx:pt:samplesPerPixel = 64
+                bool omni:rtx:rt:ecoMode:enabled
+                bool omni:rtx:scene:hydra:materialSyncLoads = 1
+                rel orderedVars = [
+                    </Render/Vars/LdrColorSD>,
+                    </Render/Vars/LdrColor>,
+                ]
+                custom bool overrideClipRange = 0
+                uniform int2 resolution = (1280, 720)
+            }
+        }
+    }
+
+    def RenderSettings "OmniverseGlobalRenderSettings" (
+        prepend apiSchemas = ["OmniRtxSettingsGlobalRtAdvancedAPI_1", "OmniRtxSettingsGlobalPtAdvancedAPI_1"]
+        no_delete = true
+    )
+    {
+        rel products = [
+            </Render/OmniverseKit/HydraTextures/omni_kit_widget_viewport_ViewportTexture_0>,
+            </Render/OmniverseKit/HydraTextures/Replicator>,
+            </Render/OmniverseKit/HydraTextures/Replicator_01>,
+            </Render/OmniverseKit/HydraTextures/Replicator_02>,
+        ]
+    }
+
+    def "Vars" (
+        hide_in_stage_window = true
+        no_delete = true
+    )
+    {
+        def RenderVar "LdrColor" (
+            hide_in_stage_window = true
+            no_delete = true
+        )
+        {
+            uniform string sourceName = "LdrColor"
+            uniform token sourceType = "raw"
+        }
+
+        def RenderVar "GenericModelOutput" (
+            prepend apiSchemas = ["RenderVarChannelsAPI"]
+        )
+        {
+            string[] channels = ["NONE"]
+            uniform string sourceName = "GenericModelOutput"
+        }
+    }
+}
+
+over "OmniverseKit_Persp"
+{
+    float exposure:fStop = 5
+    float exposure:responsivity = 1.1026709
+    float exposure:time = 0.02
+}
+
+over "World"
+{
+    over "PhysicsScene" (
+        prepend apiSchemas = ["NewtonSceneAPI"]
+    )
+    {
+    }
+
+    def Xform "Carter" (
+        prepend references = @./carter_py/carter_1/carter.usda@
+        variants = {
+            string Physics = "physx"
+        }
+    )
+    {
+        double3 xformOp:translate = (0.5, 0.31, 0.25)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+
+        over "Geometry"
+        {
+            over "chassis_link"
+            {
+                def Xform "Front_Sensor"
+                {
+                    double3 xformOp:translate = (0.25, 0, 0.45)
+                    uniform token[] xformOpOrder = ["xformOp:translate"]
+
+                    def Camera "Camera"
+                    {
+                        float2 clippingRange = (0.01, 10000000)
+                        float focalLength = 18.147562
+                        float horizontalAperture = 20.955
+                        float verticalAperture = 15.716
+                        quatd xformOp:orient = (0.5, 0.5, -0.5, -0.5)
+                        double3 xformOp:translate = (0.06, 0, 0)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
+                    }
+
+                    def OmniLidar "Lidar" (
+                        prepend references = @https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/Sensors/NVIDIA/Example_Rotary_2D.usda@
+                    )
+                    {
+                        custom string[] _replicator:rendervar:GenericModelOutput:channels = ["NONE"]
+                        bool omni:sensor:Core:accumulateOutputs = 1
+                        quatd xformOp:orient = (1, 0, 0, 0)
+                        double3 xformOp:scale = (1, 1, 1)
+                        double3 xformOp:translate = (0, 0, 0.1)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+                }
+
+                def Camera "ChaseCam"
+                {
+                    float2 clippingRange = (0.05, 1000)
+                    float focalLength = 18
+                    float horizontalAperture = 20.955
+                    float verticalAperture = 11.787188
+                    float3 xformOp:rotateXYZ = (75, 0, -90)
+                    double3 xformOp:translate = (-3, 0, 1.6)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ"]
+                }
+
+                over "com_offset"
+                {
+                }
+
+                over "imu"
+                {
+                }
+
+                over "left_wheel_link"
+                {
+                }
+
+                over "right_wheel_link"
+                {
+                }
+
+                over "rear_pivot_link"
+                {
+                    over "rear_wheel_link"
+                    {
+                    }
+                }
+            }
+        }
+
+        over "Physics"
+        {
+            over "left_wheel"
+            {
+                float state:angular:physics:position = 0
+                float state:angular:physics:velocity = 0
+            }
+
+            over "right_wheel"
+            {
+                float state:angular:physics:position = 0
+                float state:angular:physics:velocity = 0
+            }
+
+            over "rear_pivot"
+            {
+                float state:angular:physics:position = 0
+                float state:angular:physics:velocity = 0
+            }
+
+            over "rear_axle"
+            {
+                float state:angular:physics:position = 0
+                float state:angular:physics:velocity = 0
+            }
+        }
+    }
+
+    def OmniGraph "DriveGraph"
+    {
+        token evaluationMode = "Automatic"
+        token evaluator:type = "execution"
+        token fabricCacheBacking = "StageWithoutHistory"
+        int2 fileFormatVersion = (1, 9)
+        token pipelineStage = "pipelineStageSimulation"
+
+        def OmniGraphNode "tick"
+        {
+            token node:type = "omni.graph.action.OnPlaybackTick"
+            int node:typeVersion = 2
+            custom double outputs:deltaSeconds
+            custom double outputs:frame
+            custom uint outputs:tick (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            custom double outputs:time
+        }
+
+        def OmniGraphNode "twist"
+        {
+            custom uint64 inputs:context
+            custom uint inputs:execIn (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            prepend uint inputs:execIn.connect = </World/DriveGraph/tick.outputs:tick>
+            custom string inputs:nodeNamespace
+            custom string inputs:qosProfile
+            custom uint64 inputs:queueSize
+            custom string inputs:topicName = "cmd_vel"
+            token node:type = "isaacsim.ros2.bridge.ROS2SubscribeTwist"
+            int node:typeVersion = 1
+            custom vector3d outputs:angularVelocity
+            custom uint outputs:execOut (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            custom vector3d outputs:linearVelocity
+        }
+
+        def OmniGraphNode "lin"
+        {
+            custom token inputs:tuple
+            prepend token inputs:tuple.connect = </World/DriveGraph/twist.outputs:linearVelocity>
+            token node:type = "omni.graph.nodes.BreakVector3"
+            int node:typeVersion = 1
+            custom token outputs:x
+            custom token outputs:y
+            custom token outputs:z
+        }
+
+        def OmniGraphNode "ang"
+        {
+            custom token inputs:tuple
+            prepend token inputs:tuple.connect = </World/DriveGraph/twist.outputs:angularVelocity>
+            token node:type = "omni.graph.nodes.BreakVector3"
+            int node:typeVersion = 1
+            custom token outputs:x
+            custom token outputs:y
+            custom token outputs:z
+        }
+
+        def OmniGraphNode "diff"
+        {
+            custom double inputs:angularVelocity
+            prepend double inputs:angularVelocity.connect = </World/DriveGraph/ang.outputs:z>
+            custom double inputs:dt
+            custom uint inputs:execIn (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            prepend uint inputs:execIn.connect = </World/DriveGraph/tick.outputs:tick>
+            custom double inputs:linearVelocity
+            prepend double inputs:linearVelocity.connect = </World/DriveGraph/lin.outputs:x>
+            custom double inputs:maxAcceleration
+            custom double inputs:maxAngularAcceleration
+            custom double inputs:maxAngularSpeed = 1
+            custom double inputs:maxDeceleration
+            custom double inputs:maxLinearSpeed = 1
+            custom double inputs:maxWheelSpeed
+            custom double inputs:wheelDistance = 0.628
+            custom double inputs:wheelRadius = 0.24
+            token node:type = "isaacsim.robot.wheeled_robots.DifferentialController"
+            int node:typeVersion = 1
+            custom double[] outputs:velocityCommand
+        }
+
+        def OmniGraphNode "artic"
+        {
+            custom double[] inputs:effortCommand
+            custom uint inputs:execIn (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            prepend uint inputs:execIn.connect = </World/DriveGraph/tick.outputs:tick>
+            custom int[] inputs:jointIndices
+            custom token[] inputs:jointNames = ["left_wheel", "right_wheel"]
+            custom double[] inputs:positionCommand
+            custom string inputs:robotPath = "/World/Carter/Geometry/chassis_link"
+            custom rel inputs:targetPrim (
+                customData = {
+                    dictionary omni = {
+                        dictionary graph = {
+                            string relType = "target"
+                        }
+                    }
+                }
+            )
+            custom double[] inputs:velocityCommand
+            prepend double[] inputs:velocityCommand.connect = </World/DriveGraph/diff.outputs:velocityCommand>
+            token node:type = "isaacsim.core.nodes.IsaacArticulationController"
+            int node:typeVersion = 1
+        }
+    }
+
+    def OmniGraph "RosGraph"
+    {
+        token evaluationMode = "Automatic"
+        token evaluator:type = "execution"
+        token fabricCacheBacking = "StageWithoutHistory"
+        int2 fileFormatVersion = (1, 9)
+        token pipelineStage = "pipelineStageSimulation"
+
+        def OmniGraphNode "tick"
+        {
+            token node:type = "omni.graph.action.OnPlaybackTick"
+            int node:typeVersion = 2
+            custom double outputs:deltaSeconds
+            custom double outputs:frame
+            custom uint outputs:tick (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            custom double outputs:time
+        }
+
+        def OmniGraphNode "simtime"
+        {
+            custom uint64 inputs:referenceTimeDenominator
+            custom int64 inputs:referenceTimeNumerator
+            custom bool inputs:resetOnStop
+            token node:type = "isaacsim.core.nodes.IsaacReadSimulationTime"
+            int node:typeVersion = 1
+            custom double outputs:simulationTime
+        }
+
+        def OmniGraphNode "clock"
+        {
+            custom uint64 inputs:context
+            custom uint inputs:execIn (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            prepend uint inputs:execIn.connect = </World/RosGraph/tick.outputs:tick>
+            custom string inputs:nodeNamespace
+            custom string inputs:qosProfile
+            custom uint64 inputs:queueSize
+            custom double inputs:timeStamp
+            prepend double inputs:timeStamp.connect = </World/RosGraph/simtime.outputs:simulationTime>
+            custom string inputs:topicName
+            token node:type = "isaacsim.ros2.bridge.ROS2PublishClock"
+            int node:typeVersion = 1
+        }
+
+        def OmniGraphNode "odomc"
+        {
+            custom rel inputs:chassisPrim = </World/Carter/Geometry/chassis_link> (
+                customData = {
+                    dictionary omni = {
+                        dictionary graph = {
+                            string relType = "target"
+                        }
+                    }
+                }
+            )
+            custom uint inputs:execIn (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            prepend uint inputs:execIn.connect = </World/RosGraph/tick.outputs:tick>
+            token node:type = "isaacsim.core.nodes.IsaacComputeOdometry"
+            int node:typeVersion = 1
+            custom vector3d outputs:angularAcceleration
+            custom vector3d outputs:angularVelocity
+            custom uint outputs:execOut (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            custom vector3d outputs:globalLinearAcceleration
+            custom vector3d outputs:globalLinearVelocity
+            custom vector3d outputs:linearAcceleration
+            custom vector3d outputs:linearVelocity
+            custom quatd outputs:orientation
+            custom vector3d outputs:position
+        }
+
+        def OmniGraphNode "odom"
+        {
+            custom vector3d inputs:angularVelocity
+            prepend vector3d inputs:angularVelocity.connect = </World/RosGraph/odomc.outputs:angularVelocity>
+            custom string inputs:chassisFrameId = "chassis_link"
+            custom uint64 inputs:context
+            custom uint inputs:execIn (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            prepend uint inputs:execIn.connect = </World/RosGraph/tick.outputs:tick>
+            custom vector3d inputs:linearVelocity
+            prepend vector3d inputs:linearVelocity.connect = </World/RosGraph/odomc.outputs:linearVelocity>
+            custom string inputs:nodeNamespace
+            custom string inputs:odomFrameId = "odom"
+            custom quatd inputs:orientation
+            prepend quatd inputs:orientation.connect = </World/RosGraph/odomc.outputs:orientation>
+            custom vector3d inputs:position
+            prepend vector3d inputs:position.connect = </World/RosGraph/odomc.outputs:position>
+            custom bool inputs:publishRawVelocities
+            custom string inputs:qosProfile
+            custom uint64 inputs:queueSize
+            custom vector3d inputs:robotFront
+            custom double inputs:timeStamp
+            prepend double inputs:timeStamp.connect = </World/RosGraph/simtime.outputs:simulationTime>
+            custom string inputs:topicName
+            token node:type = "isaacsim.ros2.bridge.ROS2PublishOdometry"
+            int node:typeVersion = 1
+        }
+
+        def OmniGraphNode "tf"
+        {
+            custom token[] inputs:childFrames
+            custom uint64 inputs:context
+            custom uint inputs:execIn (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            prepend uint inputs:execIn.connect = </World/RosGraph/tick.outputs:tick>
+            custom string inputs:nodeNamespace
+            custom double4[] inputs:orientations
+            custom token[] inputs:parentFrames
+            custom rel inputs:parentPrim = </World> (
+                customData = {
+                    dictionary omni = {
+                        dictionary graph = {
+                            string relType = "target"
+                        }
+                    }
+                }
+            )
+            custom string inputs:qosProfile
+            custom uint64 inputs:queueSize
+            custom bool inputs:staticPublisher
+            custom rel inputs:targetPrims = </World/Carter/Geometry/chassis_link> (
+                customData = {
+                    dictionary omni = {
+                        dictionary graph = {
+                            string relType = "target"
+                        }
+                    }
+                }
+            )
+            custom double inputs:timeStamp
+            prepend double inputs:timeStamp.connect = </World/RosGraph/simtime.outputs:simulationTime>
+            custom string inputs:topicName
+            custom double3[] inputs:translations
+            token node:type = "isaacsim.ros2.bridge.ROS2PublishTransformTree"
+            int node:typeVersion = 1
+        }
+
+        def OmniGraphNode "tfs"
+        {
+            custom token[] inputs:childFrames
+            custom uint64 inputs:context
+            custom uint inputs:execIn (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            prepend uint inputs:execIn.connect = </World/RosGraph/tick.outputs:tick>
+            custom string inputs:nodeNamespace
+            custom double4[] inputs:orientations
+            custom token[] inputs:parentFrames
+            custom rel inputs:parentPrim = </World/Carter/Geometry/chassis_link> (
+                customData = {
+                    dictionary omni = {
+                        dictionary graph = {
+                            string relType = "target"
+                        }
+                    }
+                }
+            )
+            custom string inputs:qosProfile
+            custom uint64 inputs:queueSize
+            custom bool inputs:staticPublisher = 1
+            custom rel inputs:targetPrims = [
+                </World/Carter/Geometry/chassis_link/Front_Sensor/Camera>,
+                </World/Carter/Geometry/chassis_link/Front_Sensor/Lidar>,
+            ] (
+                customData = {
+                    dictionary omni = {
+                        dictionary graph = {
+                            string relType = "target"
+                        }
+                    }
+                }
+            )
+            custom double inputs:timeStamp
+            prepend double inputs:timeStamp.connect = </World/RosGraph/simtime.outputs:simulationTime>
+            custom string inputs:topicName = "tf_static"
+            custom double3[] inputs:translations
+            token node:type = "isaacsim.ros2.bridge.ROS2PublishTransformTree"
+            int node:typeVersion = 1
+        }
+    }
+
+    def OmniGraph "SensorsGraph"
+    {
+        token evaluationMode = "Automatic"
+        token evaluator:type = "execution"
+        token fabricCacheBacking = "StageWithoutHistory"
+        int2 fileFormatVersion = (1, 9)
+        token pipelineStage = "pipelineStageSimulation"
+
+        def OmniGraphNode "tick"
+        {
+            token node:type = "omni.graph.action.OnPlaybackTick"
+            int node:typeVersion = 2
+            custom double outputs:deltaSeconds
+            custom double outputs:frame
+            custom uint outputs:tick (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            custom double outputs:time
+        }
+
+        def OmniGraphNode "rp_cam"
+        {
+            custom rel inputs:cameraPrim = </World/Carter/Geometry/chassis_link/Front_Sensor/Camera> (
+                customData = {
+                    dictionary omni = {
+                        dictionary graph = {
+                            string relType = "target"
+                        }
+                    }
+                }
+            )
+            custom bool inputs:enabled
+            custom uint inputs:execIn (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            prepend uint inputs:execIn.connect = </World/SensorsGraph/tick.outputs:tick>
+            custom uint inputs:height = 480
+            custom rel inputs:renderProductPrim (
+                customData = {
+                    dictionary omni = {
+                        dictionary graph = {
+                            string relType = "target"
+                        }
+                    }
+                }
+            )
+            custom uint inputs:width = 640
+            token node:type = "isaacsim.core.nodes.IsaacCreateRenderProduct"
+            int node:typeVersion = 3
+            custom uint outputs:execOut (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            custom token outputs:renderProductPath
+        }
+
+        def OmniGraphNode "img"
+        {
+            custom uint64 inputs:context
+            custom bool inputs:enabled
+            custom bool inputs:enableSemanticLabels
+            custom uint inputs:execIn (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            prepend uint inputs:execIn.connect = </World/SensorsGraph/rp_cam.outputs:execOut>
+            custom string inputs:frameId = "Camera"
+            custom uint inputs:frameSkipCount = 1
+            custom string inputs:nodeNamespace
+            custom string inputs:qosProfile
+            custom uint64 inputs:queueSize
+            custom token inputs:renderProductPath
+            prepend token inputs:renderProductPath.connect = </World/SensorsGraph/rp_cam.outputs:renderProductPath>
+            custom bool inputs:resetSimulationTimeOnStop
+            custom string inputs:semanticLabelsTopicName
+            custom string inputs:srtxCompressionType
+            custom float2 inputs:stereoOffset
+            custom string inputs:topicName = "image_raw"
+            custom token inputs:type = "rgb" (
+                allowedTokens = ["rgb", "rgb_h264", "rgb_hevc", "depth", "depth_pcl", "instance_segmentation", "semantic_segmentation", "bbox_2d_tight", "bbox_2d_loose", "bbox_3d"]
+            )
+            custom bool inputs:useSystemTime
+            token node:type = "isaacsim.ros2.bridge.ROS2CameraHelper"
+            int node:typeVersion = 4
+        }
+
+        def OmniGraphNode "info"
+        {
+            custom uint64 inputs:context
+            custom bool inputs:enabled
+            custom uint inputs:execIn (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            prepend uint inputs:execIn.connect = </World/SensorsGraph/rp_cam.outputs:execOut>
+            custom string inputs:frameId = "Camera"
+            custom string inputs:frameIdRight
+            custom uint inputs:frameSkipCount = 1
+            custom string inputs:nodeNamespace
+            custom string inputs:qosProfile
+            custom uint64 inputs:queueSize
+            custom token inputs:renderProductPath
+            prepend token inputs:renderProductPath.connect = </World/SensorsGraph/rp_cam.outputs:renderProductPath>
+            custom token inputs:renderProductPathRight
+            custom bool inputs:resetSimulationTimeOnStop
+            custom string inputs:topicName = "camera_info"
+            custom string inputs:topicNameRight
+            custom bool inputs:useSystemTime
+            token node:type = "isaacsim.ros2.bridge.ROS2CameraInfoHelper"
+            int node:typeVersion = 1
+        }
+
+        def OmniGraphNode "rp_lidar"
+        {
+            custom rel inputs:cameraPrim = </World/Carter/Geometry/chassis_link/Front_Sensor/Lidar> (
+                customData = {
+                    dictionary omni = {
+                        dictionary graph = {
+                            string relType = "target"
+                        }
+                    }
+                }
+            )
+            custom bool inputs:enabled
+            custom uint inputs:execIn (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            prepend uint inputs:execIn.connect = </World/SensorsGraph/tick.outputs:tick>
+            custom uint inputs:height
+            custom rel inputs:renderProductPrim (
+                customData = {
+                    dictionary omni = {
+                        dictionary graph = {
+                            string relType = "target"
+                        }
+                    }
+                }
+            )
+            custom uint inputs:width
+            token node:type = "isaacsim.core.nodes.IsaacCreateRenderProduct"
+            int node:typeVersion = 3
+            custom uint outputs:execOut (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            custom token outputs:renderProductPath
+        }
+
+        def OmniGraphNode "scan"
+        {
+            custom uint64 inputs:context
+            custom bool inputs:enabled
+            custom bool inputs:enableObjectIdMap
+            custom uint inputs:execIn (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            prepend uint inputs:execIn.connect = </World/SensorsGraph/rp_lidar.outputs:execOut>
+            custom string inputs:frameId = "Lidar"
+            custom uint inputs:frameSkipCount
+            custom bool inputs:fullScan
+            custom string inputs:nodeNamespace
+            custom string inputs:objectIdMapTopicName
+            custom string inputs:qosProfile
+            custom uint64 inputs:queueSize
+            custom token inputs:renderProductPath
+            prepend token inputs:renderProductPath.connect = </World/SensorsGraph/rp_lidar.outputs:renderProductPath>
+            custom bool inputs:resetSimulationTimeOnStop
+            custom token[] inputs:selectedMetadata
+            custom bool inputs:showDebugView
+            custom string inputs:topicName = "scan"
+            custom token inputs:type = "laser_scan" (
+                allowedTokens = ["laser_scan", "point_cloud"]
+            )
+            custom bool inputs:useSystemTime
+            token node:type = "isaacsim.ros2.bridge.ROS2RtxLidarHelper"
+            int node:typeVersion = 3
+        }
+    }
+
+    def OmniGraph "ChaseGraph"
+    {
+        token evaluationMode = "Automatic"
+        token evaluator:type = "execution"
+        token fabricCacheBacking = "StageWithoutHistory"
+        int2 fileFormatVersion = (1, 9)
+        token pipelineStage = "pipelineStageSimulation"
+
+        def OmniGraphNode "tick"
+        {
+            token node:type = "omni.graph.action.OnPlaybackTick"
+            int node:typeVersion = 2
+            custom double outputs:deltaSeconds
+            custom double outputs:frame
+            custom uint outputs:tick (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            custom double outputs:time
+        }
+
+        def OmniGraphNode "rp"
+        {
+            custom rel inputs:cameraPrim = </World/Carter/Geometry/chassis_link/ChaseCam> (
+                customData = {
+                    dictionary omni = {
+                        dictionary graph = {
+                            string relType = "target"
+                        }
+                    }
+                }
+            )
+            custom bool inputs:enabled
+            custom uint inputs:execIn (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            prepend uint inputs:execIn.connect = </World/ChaseGraph/tick.outputs:tick>
+            custom uint inputs:height = 720
+            custom rel inputs:renderProductPrim (
+                customData = {
+                    dictionary omni = {
+                        dictionary graph = {
+                            string relType = "target"
+                        }
+                    }
+                }
+            )
+            custom uint inputs:width = 1280
+            token node:type = "isaacsim.core.nodes.IsaacCreateRenderProduct"
+            int node:typeVersion = 3
+            custom uint outputs:execOut (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            custom token outputs:renderProductPath
+        }
+
+        def OmniGraphNode "img"
+        {
+            custom uint64 inputs:context
+            custom bool inputs:enabled
+            custom bool inputs:enableSemanticLabels
+            custom uint inputs:execIn (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            prepend uint inputs:execIn.connect = </World/ChaseGraph/rp.outputs:execOut>
+            custom string inputs:frameId = "ChaseCam"
+            custom uint inputs:frameSkipCount = 1
+            custom string inputs:nodeNamespace
+            custom string inputs:qosProfile
+            custom uint64 inputs:queueSize
+            custom token inputs:renderProductPath
+            prepend token inputs:renderProductPath.connect = </World/ChaseGraph/rp.outputs:renderProductPath>
+            custom bool inputs:resetSimulationTimeOnStop
+            custom string inputs:semanticLabelsTopicName
+            custom string inputs:srtxCompressionType
+            custom float2 inputs:stereoOffset
+            custom string inputs:topicName = "chase/image_raw"
+            custom token inputs:type = "rgb" (
+                allowedTokens = ["rgb", "rgb_h264", "rgb_hevc", "depth", "depth_pcl", "instance_segmentation", "semantic_segmentation", "bbox_2d_tight", "bbox_2d_loose", "bbox_3d"]
+            )
+            custom bool inputs:useSystemTime
+            token node:type = "isaacsim.ros2.bridge.ROS2CameraHelper"
+            int node:typeVersion = 4
+        }
+    }
+}
+

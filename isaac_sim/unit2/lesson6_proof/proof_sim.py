@@ -20,6 +20,10 @@
 #     selected one and worked). SetVariantSelection on a set that doesn't exist silently
 #     authors a meaningless selection, so check HasVariantSet first.
 #  4. Error messages copied from another script mislead: each one names what it checks.
+#  5. A pass/fail criterion must test ONE thing. "Finished on its own" first also required the
+#     goal, so a short test drive failed it too (found on the first GOAL=5 run).
+#  6. Odometry's frame is where the robot started ("odom"), not "World" (found on the same run:
+#     /odom said (0, 0) in World while /tf said (0.5, 0.31) in World).
 #
 # Improvements:
 #  a. Spawn at x = 0.5, not 0: the surveyed bollard BOLLARD_02 stands at (-0.42, 0.39), right
@@ -55,8 +59,15 @@ SPAWN = (0.5, AISLE_Y, 0.25)   # x 0.5: clear of BOLLARD_02 (improvement a); z: 
 GOAL_X = 30.0             # world x to reach; well before the brooding curtain at x=76.7
 SIM_SECONDS = 90.0        # time budget: 30 m at 0.5 m/s = 60 s + margin
 SETTLE_S = 1.0            # first second: Carter drops 0.25 m -> settles; reference height after
-STILL_S = 2.0             # goal reached + standing still this long -> finished early
+STILL_S = 2.0             # moved, then standing still this long -> the controller has finished
+MOVED_M = 1.0             # "moved": at least this far from the spawn point (ignores settling)
 LOG_EVERY_S = 1.0         # one report row per sim second
+# Chase camera for a VIDEO of the run (run_proof.sh: CHASE=1). It rides on the chassis, so it
+# follows the robot exactly; frames are rendered once per 1/30 s of SIM time, so the video is
+# smooth and at real robot speed whatever the RTF (no WebRTC, no screen recorder).
+import os                                                    # noqa: E402 (settings section)
+CHASE = os.environ.get("CHASE") == "1"
+CHASE_RES = (1280, 720)
 FRAME_DT = 1 / 60         # EXPECTED sim time per app frame (measured, see section 9)
 # Pass criteria (decided BEFORE running):
 MAX_LATERAL = 0.30        # m, |y - AISLE_Y| over the whole run after settling
@@ -217,7 +228,12 @@ try:
             ],
             keys.SET_VALUES: [
                 ("odomc.inputs:chassisPrim", [RtSdf.Path(CHASSIS)]),
-                ("odom.inputs:odomFrameId", "World"),               # = TF names
+                # Odometry measures motion from where the robot STARTED (it reads (0, 0) at
+                # the spawn point), so its frame is "odom", not "World": with "World", /odom and
+                # /tf made two different claims about the robot's pose in the same frame.
+                # Standard chain (REP 105): world/map -> odom -> base. Linking odom to World is
+                # localisation's job (not part of this proof).
+                ("odom.inputs:odomFrameId", "odom"),
                 ("odom.inputs:chassisFrameId", CHASSIS_FRAME),      # "chassis_link"
                 ("tf.inputs:parentPrim", [RtSdf.Path("/World")]),
                 ("tf.inputs:targetPrims", [RtSdf.Path(CHASSIS)]),   # articulation: chassis + wheels
@@ -274,6 +290,46 @@ try:
     )
     log("graphs built: DriveGraph, RosGraph, SensorsGraph")
 
+    # --- 7b. Optional chase camera (CHASE=1): its own graph, so no existing node is touched -----
+    CHASE_GRAPH = "/World/ChaseGraph"
+    if CHASE:
+        CHASE_CAM = f"{CHASSIS}/ChaseCam"
+        chase = UsdGeom.Camera.Define(stage, CHASE_CAM)
+        cxf = UsdGeom.Xformable(chase)
+        cxf.AddTranslateOp().Set(Gf.Vec3d(-3.0, 0.0, 1.6))      # 3 m behind, 1.6 m above
+        # rotateXYZ (75, 0, -90): looks along +x, 15 deg down, image up = +z (checked with
+        # pxr on the laptop: forward (0.966, 0, -0.259), up (0.259, 0, 0.966))
+        cxf.AddRotateXYZOp().Set(Gf.Vec3f(75.0, 0.0, -90.0))
+        chase.CreateFocalLengthAttr(18.0)
+        chase.CreateHorizontalApertureAttr(20.955)
+        chase.CreateVerticalApertureAttr(20.955 * CHASE_RES[1] / CHASE_RES[0])   # square pixels
+        chase.CreateClippingRangeAttr(Gf.Vec2f(0.05, 1000.0))
+        og.Controller.edit(
+            {"graph_path": CHASE_GRAPH, "evaluator_name": "execution"},
+            {
+                keys.CREATE_NODES: [
+                    ("tick", "omni.graph.action.OnPlaybackTick"),
+                    ("rp", "isaacsim.core.nodes.IsaacCreateRenderProduct"),
+                    ("img", "isaacsim.ros2.bridge.ROS2CameraHelper"),
+                ],
+                keys.CONNECT: [
+                    ("tick.outputs:tick", "rp.inputs:execIn"),
+                    ("rp.outputs:execOut", "img.inputs:execIn"),
+                    ("rp.outputs:renderProductPath", "img.inputs:renderProductPath"),
+                ],
+                keys.SET_VALUES: [
+                    ("rp.inputs:cameraPrim", [RtSdf.Path(CHASE_CAM)]),
+                    ("rp.inputs:width", CHASE_RES[0]),
+                    ("rp.inputs:height", CHASE_RES[1]),
+                    ("img.inputs:type", "rgb"),
+                    ("img.inputs:topicName", "chase/image_raw"),
+                    ("img.inputs:frameId", "ChaseCam"),
+                    ("img.inputs:frameSkipCount", 1),           # 30 Hz in sim time
+                ],
+            },
+        )
+        log(f"chase camera {CHASE_CAM} {CHASE_RES[0]}x{CHASE_RES[1]} -> /chase/image_raw")
+
     # --- 8. Wiring check: every key input exactly ONE wire (Lesson 5) ---------------------
     MUST_HAVE_ONE_WIRE = [
         f"{DRIVE}/diff.inputs:linearVelocity",
@@ -289,6 +345,8 @@ try:
         f"{SENSORS}/info.inputs:renderProductPath",
         f"{SENSORS}/scan.inputs:renderProductPath",
     ]
+    if CHASE:
+        MUST_HAVE_ONE_WIRE.append(f"{CHASE_GRAPH}/img.inputs:renderProductPath")
     problems = []
     for path in MUST_HAVE_ONE_WIRE:
         names = [s.get_path() for s in og.Controller.attribute(path).get_upstream_connections()]
@@ -355,14 +413,17 @@ try:
         if t - last_log >= LOG_EVERY_S:
             speed = 0.0 if last_xy is None else math.hypot(x - last_xy[0], y - last_xy[1]) / (t - last_log)
             log(f"{t:7.2f}  {x:8.3f} {y:8.3f} {z:7.3f} {roll:6.1f} {pitch:6.1f}   {speed:6.3f}")
-            # Finished early: past the goal and (almost) not moving since the last row
-            if x >= GOAL_X and speed < 0.01:
+            # Finished: the robot has driven somewhere and is (almost) not moving. Independent
+            # of the goal on purpose: "reached the goal" is a separate criterion, so a short
+            # test drive fails on exactly that one and nothing else.
+            moved = math.hypot(x - SPAWN[0], y - SPAWN[1]) >= MOVED_M
+            if moved and speed < 0.01:
                 still_since = t if still_since is None else still_since
             else:
                 still_since = None
             last_log, last_xy = t, (x, y)
         if still_since is not None and t - still_since >= STILL_S:
-            log(f"robot stopped past the goal: ending at t = {t:.2f} s")
+            log(f"robot moved and stood still for {STILL_S} s: ending at t = {t:.2f} s")
             break
         if t >= SIM_SECONDS:
             log(f"time budget {SIM_SECONDS} s used up")

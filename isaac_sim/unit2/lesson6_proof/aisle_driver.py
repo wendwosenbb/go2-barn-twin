@@ -23,7 +23,10 @@
 #  5. `is None`, not `== None` (identity check; the Python idiom).
 #  6. Tunable numbers are ROS parameters (declare_parameter), so a run can change them with
 #     -p name:=value instead of editing the code.
-#  7. Naming: Python classes use CapWords (AisleDriver); ROS node names use snake_case
+#  7. Parameters are strictly typed by their default: goal_distance is declared 30.0 (a float), so
+#     `-p goal_distance:=5` (an INTEGER) is rejected: "InvalidParameterTypeException ... of type
+#     'INTEGER', expecting type 'DOUBLE'". Pass `5.0` (run_proof.sh formats it for you).
+#  8. Naming: Python classes use CapWords (AisleDriver); ROS node names use snake_case
 #     ("aisle_driver"), matching the file name.
 #
 # Improvements:

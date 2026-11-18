@@ -1,0 +1,39 @@
+
+Files:             proof_20261118_195142_0.mcap
+Bag size:          1.9 GiB
+Storage id:        mcap
+ROS Distro:        jazzy
+Duration:          74.200000000s
+Start:             Jan  1 1970 00:00:00.040000000 (0.040000000)
+End:               Jan  1 1970 00:01:14.240000000 (74.240000000)
+Messages:          24433
+Topic information: Topic: /camera_info | Type: sensor_msgs/msg/CameraInfo | Count: 2223 | Serialization Format: cdr
+                   Topic: /clock | Type: rosgraph_msgs/msg/Clock | Count: 4452 | Serialization Format: cdr
+                   Topic: /cmd_vel | Type: geometry_msgs/msg/Twist | Count: 1437 | Serialization Format: cdr
+                   Topic: /image_raw | Type: sensor_msgs/msg/Image | Count: 2223 | Serialization Format: cdr
+                   Topic: /odom | Type: nav_msgs/msg/Odometry | Count: 4452 | Serialization Format: cdr
+                   Topic: /scan | Type: sensor_msgs/msg/LaserScan | Count: 741 | Serialization Format: cdr
+                   Topic: /tf | Type: tf2_msgs/msg/TFMessage | Count: 4452 | Serialization Format: cdr
+                   Topic: /tf_static | Type: tf2_msgs/msg/TFMessage | Count: 4453 | Serialization Format: cdr
+Service:           0
+Service information: 
+
+
+Files:             proof_20261118_202405_0.mcap
+Bag size:          5.8 GiB
+Storage id:        mcap
+ROS Distro:        jazzy
+Duration:          74.200000000s
+Start:             Jan  1 1970 00:00:00.040000000 (0.040000000)
+End:               Jan  1 1970 00:01:14.240000000 (74.240000000)
+Messages:          24437
+Topic information: Topic: /camera_info | Type: sensor_msgs/msg/CameraInfo | Count: 2223 | Serialization Format: cdr
+                   Topic: /chase/image_raw | Type: sensor_msgs/msg/Image | Count: 2222 | Serialization Format: cdr
+                   Topic: /clock | Type: rosgraph_msgs/msg/Clock | Count: 4452 | Serialization Format: cdr
+                   Topic: /cmd_vel | Type: geometry_msgs/msg/Twist | Count: 1442 | Serialization Format: cdr
+                   Topic: /odom | Type: nav_msgs/msg/Odometry | Count: 4452 | Serialization Format: cdr
+                   Topic: /scan | Type: sensor_msgs/msg/LaserScan | Count: 741 | Serialization Format: cdr
+                   Topic: /tf | Type: tf2_msgs/msg/TFMessage | Count: 4452 | Serialization Format: cdr
+                   Topic: /tf_static | Type: tf2_msgs/msg/TFMessage | Count: 4453 | Serialization Format: cdr
+Service:           0
+Service information: 

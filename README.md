@@ -30,6 +30,27 @@ A robot that works in a poultry barn has to be trained somewhere other than the 
 | ![Feeder line](barn_usd/barns/farm1_barn1/renders/03_FeederLine.png) **Feeder pans** clamped to the feed tube every 0.686 m, as measured in the scan | ![Drinker line](barn_usd/barns/farm1_barn1/renders/04_DrinkerLine.png) **Drinker cups** every 0.15 m, cup arms alternating along the pipe, as installed |
 | ![Scan from above](docs/images/scan_birdseye.png) **The lidar map**: control room, roof and the cool-cell pads on the side wall | ![Scan cutaway](docs/images/scan_cutaway.png) **Cutaway of the scan** (everything above 2.4 m clipped): cool cells on both walls, 20 brooding heaters, eight lines |
 
+## In Isaac Sim: a robot drives the aisle over ROS 2
+
+| | |
+|---|---|
+| [![The barn and robot in the Isaac Sim editor](docs/images/omniverse_barn_scene_thumb.jpg)](isaac_sim/unit2/lesson6_proof/media/omniverse_barn_scene.mp4) **The scene in Isaac Sim 6.1** (1:53, click to play): the barn twin, a Carter robot with a camera and 2D lidar, and the ROS 2 action graphs in the editor | [![Proof run with data overlay](docs/images/proof_overlay_thumb.jpg)](isaac_sim/unit2/lesson6_proof/media/proof_overlay.mp4) **The proof run** (1:16, click to play): 30 m down the aisle under ROS 2 control, with live data from the recording and the pass/fail verdict |
+
+**What the proof run shows.** A Carter robot (a wheeled stand-in until the Go2 can walk on `cmd_vel`) carries a camera and a 2D lidar down the 1.7 m aisle between a drinker line and a feeder line, from the robot's mapping start to 30 m in. Three separate processes talk only over ROS 2, as on a real robot:
+
+- **Simulator:** Isaac Sim 6.1, headless, opens `barn_sim.usda`, adds the robot and its ROS 2 graphs, and publishes `/clock`, `/odom`, `/tf`, `/tf_static`, `/scan`, `/image_raw` and `/camera_info` in simulation time ([`proof_sim.py`](isaac_sim/unit2/lesson6_proof/proof_sim.py)).
+- **Controller:** a small `rclpy` node on simulation time reads `/odom` and steers along the aisle line on `/cmd_vel`, with a watchdog, then stops at the goal ([`aisle_driver.py`](isaac_sim/unit2/lesson6_proof/aisle_driver.py)).
+- **Recorder:** `ros2 bag record` of every topic.
+
+One command ([`run_proof.sh`](isaac_sim/unit2/lesson6_proof/run_proof.sh)) starts all three and decides **pass or fail against criteria written before the run**: reach x ≥ 30 m, stay within ±30 cm of the aisle line, no tipping, stay on the floor, stop on its own, all topics in the bag. Result: 30.50 m, 1.5 cm maximum lateral error, 0.6° maximum tilt, **PASS** ([report](isaac_sim/unit2/lesson6_proof/results/proof_report_20261118_202405_chase.txt)). The runs are deterministic: repeated runs stop at the same simulation time to the frame.
+
+**How the videos were made.** Not by screen-recording the simulator: the WebRTC stream is choppy, and the simulation ran at 0.24× real time on the cloud GPU. Instead, every frame comes from the recorded bag:
+
+- a chase camera is parented to the robot's chassis and published on its own ROS 2 topic at 30 frames per *simulated* second, so the video plays at the robot's real speed whatever the simulator's speed ([`bag_to_video.py`](isaac_sim/unit2/lesson6_proof/bag_to_video.py));
+- [`make_proof_video.py`](isaac_sim/unit2/lesson6_proof/make_proof_video.py) draws the overlay from the same bag: simulation time, position, speed and lateral error from `/odom`, the controller's `/cmd_vel`, and the robot's own camera as picture-in-picture (matched by simulation time from an identical run), then appends the verdict from the run's report.
+
+The editor clip is a screen recording of the Isaac Sim GUI streamed from the cloud workstation.
+
 ## From a robot's mapping run to a USD stage
 
 ```mermaid
@@ -149,6 +170,9 @@ go2-barn-twin/
 │   │       └── renders/              cameras.usda + the images in this README
 │   ├── scripts/                      every generator, the validator and the lidar tools
 │   └── scratch/                      experiments
+├── isaac_sim/                        Isaac Sim course work, one folder per unit and lesson
+│   ├── unit2/lesson1..6_*/           GUI scenes + the same in Python; lesson6_proof = the run above
+│   └── unit3/                        sensor simulation: lidar theory scripts (laptop), GPU lessons
 ├── infra/                            AWS GPU workstation for Isaac Sim (see infra/README.md)
 └── docs/                             README images and the cameras that make them
 ```
@@ -203,7 +227,7 @@ python scripts/build_feeder_pan.py     # mm -> m, pivot, part looks, proxy LOD, 
 
 ## Cloud workstation
 
-Isaac Sim needs an RTX GPU, so it runs headless on an AWS `g6.2xlarge` (NVIDIA L4) and streams to the laptop over WebRTC inside a private Tailscale network. No simulator port is ever public, every script checks the AWS account before acting, and a data volume keeps Docker images and shader caches across rebuilds. See [`infra/README.md`](infra/README.md).
+Isaac Sim needs an RTX GPU, so it runs headless on an AWS `g6.2xlarge` (NVIDIA L4; falls back to `g6.4xlarge` or `g5.2xlarge` when the zone has no capacity) and streams to the laptop over WebRTC inside a private Tailscale network. No simulator port is ever public, every script checks the AWS account before acting, and a data volume keeps Docker images and shader caches across rebuilds. See [`infra/README.md`](infra/README.md).
 
 ## Status
 
@@ -211,8 +235,8 @@ Isaac Sim needs an RTX GPU, so it runs headless on an AWS `g6.2xlarge` (NVIDIA L
 |---|---|---|
 | **Survey** | first visit; barn frame; map flattened; walkers removed; 52 items placed from the map | second visit with [`visit_02.md`](barn_usd/barns/farm1_barn1/survey/visit_02.md): doors, lights, sensors, wall thickness |
 | **Library** | materials, classes, asset generator, feeder pan, drinker nipple | heater, tunnel fan, cool cell, fence, curtain, bollard, hopper |
-| **Barn** | entry files and layer stack, shell, lines with all pans and cups, validator | rest of `equipment.csv` in layout, floor mesh from the lidar, lighting |
-| **Sim** | GPU workstation | physics and semantics layers, open `barn_sim.usda` in Isaac Sim, simulated vs real lidar |
+| **Barn** | entry files and layer stack, shell, lines with all pans and cups, validator | rest of `equipment.csv` in layout, floor mesh from the lidar, lamps at their surveyed positions (visit 2) |
+| **Sim** | GPU workstation; physics layer (200 Hz, floor and wall colliders) and lighting; `barn_sim.usda` in Isaac Sim; robot driven through the barn over ROS 2 with a pass/fail proof | Livox Mid-360 sensor twin, simulated vs real lidar, semantics layer, Go2 walking policy |
 
 ## License
 

@@ -34,7 +34,13 @@ DRIVER_PID=$PROOF/driver.pid           # no dependence on pkill being in the ima
 WORK=/data/isaac-sim/work              # on the VM (= /isaac-sim/work inside isaac-sim)
 REPORT=$WORK/proof_report.txt
 GOAL=${GOAL:-30.0}                     # controller goal distance, override from the environment
+GOAL=$(printf "%.2f" "$GOAL")           # always a FLOAT: ROS 2 reads -p goal_distance:=5 as an
+                                       # INTEGER and rejects it for a parameter declared as 30.0
 TOPICS=(/clock /tf /tf_static /odom /cmd_vel /scan /camera_info /image_raw)
+CHASE=${CHASE:-0}                      # CHASE=1: add the chase camera and record ITS images
+if [[ $CHASE == 1 ]]; then             # instead of the robot camera's (keeps the bag ~2 GB)
+  TOPICS=(/clock /tf /tf_static /odom /cmd_vel /scan /camera_info /chase/image_raw)
+fi
 ROS="source /opt/ros/jazzy/setup.bash"
 
 die() { echo "ERROR: $*" >&2; exit 2; }
@@ -83,10 +89,12 @@ info "recorder -> $BAG, controller running"
 
 
 # --- 5. Run the simulator (foreground), keep its exit code ---------------------------------------
-rm -f "$REPORT"                        # a stale report from an earlier run must not count
+# A stale report from an earlier run must not count. Delete it THROUGH the container: the
+# simulator writes it as the container user (UID 1234), so ubuntu on the VM may not.
+docker exec isaac-sim rm -f /isaac-sim/work/proof_report.txt
 info "simulator starting (headless; loading takes a minute or two)"
 set +e
-docker exec isaac-sim /isaac-sim/python.sh /isaac-sim/work/proof_sim.py
+docker exec -e CHASE="$CHASE" isaac-sim /isaac-sim/python.sh /isaac-sim/work/proof_sim.py
 SIM_RC=$?
 set -e
 info "simulator exited with code $SIM_RC"
@@ -123,6 +131,7 @@ done
 echo
 # The report line is the reliable signal (proof_sim.py header, improvement c); the exit code
 # is shown as a cross-check.
+[[ $CHASE == 1 ]] && echo "video: python3 $PROOF/bag_to_video.py $BAG $PROOF/proof_$RUN_ID.mp4 --topic /chase/image_raw (in ros2)"
 if [[ -f $REPORT ]] && grep -q "^RESULT: PASS" "$REPORT" && [[ $BAG_OK -eq 1 ]]; then
   echo "UNIT 2 PROOF: PASS   (run $RUN_ID, bag /data/ros2/bags/proof_$RUN_ID, sim exit $SIM_RC)"
   exit 0

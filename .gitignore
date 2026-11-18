@@ -226,3 +226,11 @@ pixar-usd-tutorial/
 
 # Notes for AI coding assistants: kept local
 CLAUDE.md
+
+# Lesson 6 media: only the overlay video and the editor clip are published (size); the
+# raw camera videos and the original screen recording stay local
+isaac_sim/unit2/lesson6_proof/media/*
+!isaac_sim/unit2/lesson6_proof/media/proof_overlay.mp4
+!isaac_sim/unit2/lesson6_proof/media/omniverse_barn_scene.mp4
+# figures made from the third-party Mid-360 pattern (origin of the CSV not stated): local only
+isaac_sim/unit3/lesson1_lidar_theory/figures/*_csv.png
