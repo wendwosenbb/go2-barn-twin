@@ -44,13 +44,6 @@ A robot that works in a poultry barn has to be trained somewhere other than the 
 
 One command ([`run_proof.sh`](isaac_sim/unit2/lesson6_proof/run_proof.sh)) starts all three and decides **pass or fail against criteria written before the run**: reach x ≥ 30 m, stay within ±30 cm of the aisle line, no tipping, stay on the floor, stop on its own, all topics in the bag. Result: 30.50 m, 1.5 cm maximum lateral error, 0.6° maximum tilt, **PASS** ([report](isaac_sim/unit2/lesson6_proof/results/proof_report_20261118_202405_chase.txt)). The runs are deterministic: repeated runs stop at the same simulation time to the frame.
 
-**How the videos were made.** Not by screen-recording the simulator: the WebRTC stream is choppy, and the simulation ran at 0.24× real time on the cloud GPU. Instead, every frame comes from the recorded bag:
-
-- a chase camera is parented to the robot's chassis and published on its own ROS 2 topic at 30 frames per *simulated* second, so the video plays at the robot's real speed whatever the simulator's speed ([`bag_to_video.py`](isaac_sim/unit2/lesson6_proof/bag_to_video.py));
-- [`make_proof_video.py`](isaac_sim/unit2/lesson6_proof/make_proof_video.py) draws the overlay from the same bag: simulation time, position, speed and lateral error from `/odom`, the controller's `/cmd_vel`, and the robot's own camera as picture-in-picture (matched by simulation time from an identical run), then appends the verdict from the run's report.
-
-The editor clip is a screen recording of the Isaac Sim GUI streamed from the cloud workstation.
-
 ## From a robot's mapping run to a USD stage
 
 ```mermaid
