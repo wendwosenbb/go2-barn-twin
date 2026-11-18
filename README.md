@@ -32,9 +32,15 @@ A robot that works in a poultry barn has to be trained somewhere other than the 
 
 ## In Isaac Sim: a robot drives the aisle over ROS 2
 
-| | |
-|---|---|
-| [![The barn and robot in the Isaac Sim editor](docs/images/omniverse_barn_scene_thumb.jpg)](isaac_sim/unit2/lesson6_proof/media/omniverse_barn_scene.mp4) **The scene in Isaac Sim 6.1** (1:53, click to play): the barn twin, a Carter robot with a camera and 2D lidar, and the ROS 2 action graphs in the editor | [![Proof run with data overlay](docs/images/proof_overlay_thumb.jpg)](isaac_sim/unit2/lesson6_proof/media/proof_overlay.mp4) **The proof run** (1:16, click to play): 30 m down the aisle under ROS 2 control, with live data from the recording and the pass/fail verdict |
+**The proof run** (1:16): 30 m down the aisle under ROS 2 control, with live data from the recording and the pass/fail verdict.
+
+https://github.com/user-attachments/assets/18286311-c213-432a-bbf1-6545d131a221
+
+**The scene in Isaac Sim 6.1** (1:53): the barn twin, a Carter robot with a camera and 2D lidar, and the ROS 2 action graphs in the editor.
+
+https://github.com/user-attachments/assets/23143486-6de8-46e5-a7cc-261224bc9aac
+
+Full-quality files: [`proof_overlay.mp4`](isaac_sim/unit2/lesson6_proof/media/proof_overlay.mp4), [`omniverse_barn_scene.mp4`](isaac_sim/unit2/lesson6_proof/media/omniverse_barn_scene.mp4) (download).
 
 **What the proof run shows.** A Carter robot (a wheeled stand-in until the Go2 can walk on `cmd_vel`) carries a camera and a 2D lidar down the 1.7 m aisle between a drinker line and a feeder line, from the robot's mapping start to 30 m in. Three separate processes talk only over ROS 2, as on a real robot:
 
