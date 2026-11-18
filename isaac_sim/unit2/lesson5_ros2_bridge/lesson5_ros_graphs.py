@@ -8,30 +8,30 @@
 # Node types and input/output names were checked in the 6.1 container (Nov 13-15), except
 # IsaacCreateRenderProduct's camera input ("cameraPrim"): see section 5.
 #
-# CORRECTIONS to the first draft (each would have failed when run, or wired the wrong thing):
-#   1. Missing commas between tuples in the node lists: ("a", "x") ("b", "y") is parsed as
-#      CALLING the first tuple -> "TypeError: 'tuple' object is not callable". Python only
-#      notices when the line runs, which is why the file still "parsed".
-#   2. Attribute paths need a COLON after inputs/outputs: "lin.inputs:tuple", not
-#      "lin.inputs.Tuble" / "tick.outputs.tick" / "diff.inputs.linearVelocity"; and "inputs",
-#      not "input" / "output". Names are case-sensitive: "tuple", not "Tuble".
-#   3. Typo "twsit" -> "twist".
-#   4. keys.CREATE_NODE / keys.CREATE_CONNECTIONS don't exist -> keys.CREATE_NODES, keys.CONNECT.
-#   5. The drive graph ALREADY exists in the Lesson 2 file with tick, diff and artic: creating them
-#      again fails ("already exists"), and re-setting diff's fixed linearVelocity is pointless once a
-#      wire feeds it. Only the new nodes and wires are added to that graph.
-#   6. ROS2SubscribeTwist has no frameId input (it receives; frames belong to publishers).
-#   7. The camera helper's type/topicName/frameId were set on the render-product node (rp_cam)
-#      instead of the helper (img).
-#   8. Neither render product was told WHICH prim to render (camera, lidar), and the lidar's
-#      execOut -> scan.execIn wire was missing.
-#   9. (found on the first run) Short node names in edit() only resolve for nodes created in the
-#      SAME call; existing nodes (tick, diff, artic in the drive graph) need full paths.
-#  10. (found on the second run) /tf_static was missing: staticPublisher = True changes only the
-#      QoS, not the topic. The GUI version had topicName "tf_static" typed in; the script left it
-#      at the default "tf", so the sensor transforms went to /tf. Set the topic explicitly.
-#  11. Step 6 (wiring check) added: every data input that matters must have exactly ONE wire
-#      (Part B's duplicate-wire bug).
+# PITFALLS (each one fails when run, or wires the wrong thing):
+#   1. Commas between tuples in the node lists: ("a", "x") ("b", "y") without a comma is parsed
+#      as CALLING the first tuple -> "TypeError: 'tuple' object is not callable". Python only
+#      notices when the line runs, so the file still "parses".
+#   2. Attribute paths have a COLON after inputs/outputs: "lin.inputs:tuple", never
+#      "lin.inputs.tuple"; it's "inputs"/"outputs" (plural); names are case-sensitive.
+#   3. Node names are matched exactly: a typo ("twsit") creates nothing to connect to.
+#   4. The edit keys are keys.CREATE_NODES, keys.CONNECT, keys.SET_VALUES (no CREATE_NODE or
+#      CREATE_CONNECTIONS).
+#   5. The drive graph ALREADY exists in the Lesson 2 file with tick, diff and artic: creating
+#      them again fails ("already exists"), and setting diff's fixed linearVelocity is pointless
+#      once a wire feeds it. Only the new nodes and wires are added to that graph.
+#   6. ROS2SubscribeTwist has no frameId input: it receives; frames belong to publishers.
+#   7. type/topicName/frameId belong to the camera HELPER (img), not the render-product node.
+#   8. Every render product must be told WHICH prim to render (camera, lidar), and each helper
+#      needs its execIn wire (rp_lidar.execOut -> scan.execIn).
+#   9. Short node names in edit() only resolve for nodes created in the SAME call; existing
+#      nodes (tick, diff, artic in the drive graph) need full paths (seen on the first run:
+#      "Failed to connect tick.outputs:tick -> ...").
+#  10. staticPublisher = True changes only the QoS (kept for late subscribers), not the topic:
+#      topicName defaults to "tf", so without topicName "tf_static" the sensor transforms land
+#      on /tf and /tf_static doesn't exist (seen on the second run).
+#  11. Every data input that matters must have exactly ONE wire; section 6 checks it before
+#      saving (Part B's duplicate-wire bug).
 
 import omni.graph.core as og
 import omni.timeline

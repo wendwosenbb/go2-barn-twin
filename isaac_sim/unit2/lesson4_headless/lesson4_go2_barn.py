@@ -10,19 +10,18 @@
 #
 # Calls below marked "verified" were checked in the 6.1 container (source or examples).
 #
-# CORRECTIONS to the first draft (each would have stopped the run or given wrong results):
-#   1. SimulationApp({{'headless': True}}) -> {"headless": True}: double braces make a SET
-#      containing a dict, which errors.
-#   2. stage = open_stage(BARN) -> ok, stage = open_stage(BARN): it returns (bool, stage);
-#      check ok and fail fast.
-#   3. stage.traverse() -> stage.Traverse() (USD methods are capitalised), and the scene check
-#      compared the path to 'World/PhysicsScene' (no leading "/", and a Path vs a str): it
-#      never matched, so the count was always 0. Check the TYPE: prim.IsA(UsdPhysics.Scene).
-#   4. SimulationManager.play() / .update() don't exist -> app_utils.play() and
-#      simulation_app.update().
-#   5. RigidPrim on the base has no joints (no dof_names, no get_dof_positions) -> a robot is
-#      read with Articulation, created AFTER play (it exists in the physics engine only then).
-#   6. The loop stepped but measured nothing; no report, no saved scene.
+# PITFALLS (each one stops the run or gives wrong results):
+#   1. SimulationApp takes a dict: {"headless": True}. Double braces {{"headless": True}}
+#      make a SET containing a dict, which errors.
+#   2. open_stage(BARN) returns (ok, stage), not the stage: unpack both, check ok, fail fast.
+#   3. USD methods are capitalised: stage.Traverse(), not traverse(). Find the physics scene
+#      by TYPE, prim.IsA(UsdPhysics.Scene), not by comparing paths: 'World/PhysicsScene'
+#      (no leading "/", and a str compared with a Path) never matches, so the count stays 0.
+#   4. Play and update belong to the app: app_utils.play() and simulation_app.update().
+#      SimulationManager has no play() or update().
+#   5. A robot is read with Articulation (dof_names, get_dof_positions), created AFTER play,
+#      because it exists in the physics engine only then. RigidPrim on the base has no joints.
+#   6. A loop that steps but measures nothing proves nothing: log, write a report, save.
 #
 # IMPROVEMENTS:
 #   a. Settings (paths, spawn, pose, duration, log rate) in one place at the top.
