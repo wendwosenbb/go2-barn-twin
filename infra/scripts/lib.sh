@@ -17,8 +17,9 @@ source "$CONFIG"
 # Defaults for settings added after the first config.env was written, so an
 # older config.env keeps working.
 : "${VM_HOST:=isaac-sim-ws}"                   # tailnet hostname and ssh target
-: "${START_ROUNDS:=30}"                        # start attempts on no capacity (~30 min)
-: "${ROUND_WAIT:=60}"                          # seconds between attempts
+: "${FALLBACK_TYPES:=g6.4xlarge g5.2xlarge}"   # tried when INSTANCE_TYPE has no capacity
+: "${START_ROUNDS:=3}"                         # passes through all types before giving up
+: "${ROUND_WAIT:=60}"                          # seconds between passes
 
 # Export so every `aws` call below uses the personal profile and region,
 # whatever the calling terminal has set.

@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 # Start the Isaac Sim workstation and launch Isaac Sim, ready for the client.
 #
-#   1. Start the EC2 instance as INSTANCE_TYPE. On InsufficientInstanceCapacity,
-#      wait and retry the same type (no fallback to other types).
+#   1. Start the EC2 instance. On InsufficientInstanceCapacity, try the
+#      fallback instance types, then wait and retry the whole list.
+#      The preferred type is always tried first, so the instance moves back
+#      to it as soon as capacity allows.
 #   2. Wait until the VM answers on the tailnet.
 #   3. Warn if idle auto-shutdown is still set to a test value.
 #   4. Start Isaac Sim (isaac-run) and wait for "Full Streaming App is loaded".
@@ -48,18 +50,25 @@ fi
 if [[ "$state" == stopped ]]; then
   AZ="$(instance_field "$IID" Placement.AvailabilityZone)"
   started=""
-  for attempt in $(seq "$START_ROUNDS"); do
-    info "starting $IID as $INSTANCE_TYPE (attempt $attempt/$START_ROUNDS)"
-    if try_start "$INSTANCE_TYPE"; then
-      started=1
-      break
-    fi
-    if (( attempt < START_ROUNDS )); then
-      info "  no $INSTANCE_TYPE capacity in $AZ; retrying in ${ROUND_WAIT}s"
+  for round in $(seq "$START_ROUNDS"); do
+    for type in $INSTANCE_TYPE $FALLBACK_TYPES; do
+      info "starting $IID as $type (pass $round/$START_ROUNDS)"
+      if try_start "$type"; then
+        started="$type"
+        break 2
+      fi
+      info "  no $type capacity in $AZ"
+    done
+    if (( round < START_ROUNDS )); then
+      info "no capacity for any type; retrying in ${ROUND_WAIT}s"
       sleep "$ROUND_WAIT"
     fi
   done
-  [[ -n "$started" ]] || die "no $INSTANCE_TYPE capacity in $AZ after $START_ROUNDS attempts; try again later"
+  [[ -n "$started" ]] || die "no GPU capacity in $AZ after $START_ROUNDS passes; try again later"
+  if [[ "$started" != "$INSTANCE_TYPE" ]]; then
+    info "NOTE: running as fallback type $started. Price differs, and a different GPU"
+    info "      model (e.g. A10G) rebuilds the shader cache, so the first load is slow."
+  fi
 else
   info "instance $IID is already $state"
 fi

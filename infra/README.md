@@ -8,7 +8,7 @@ private Tailscale network, with:
 - **persistent shader and asset caches**, so a warm start takes ~50 s instead of ~5 min
 - **no open inbound ports**: all access goes over a private Tailscale network
 - **idle auto-shutdown**, so a forgotten instance stops itself after 30 minutes
-- **capacity retry**, so a temporary "no GPUs available" doesn't need babysitting
+- **a capacity fallback**, so "no GPUs available" doesn't block a work session
 
 Everything here was built and measured on a `g6.2xlarge` (NVIDIA L4) in
 `us-east-2`.
@@ -21,7 +21,7 @@ Everything here was built and measured on a `g6.2xlarge` (NVIDIA L4) in
 | `scripts/lib.sh` | Shared helpers, including the AWS account guard |
 | `scripts/provision.sh` | One-time creation of key pair, security group and instance |
 | `scripts/push-vm-tools.sh` | Install `vm/*` on the VM over Tailscale SSH |
-| `scripts/start.sh` | Start the VM and Isaac Sim, retrying while AWS has no capacity |
+| `scripts/start.sh` | Start the VM and Isaac Sim, with capacity retry and fallback |
 | `scripts/stop.sh` | Stop Isaac Sim, then the instance |
 | `scripts/status.sh` | Instance, tailnet, Isaac Sim and auto-shutdown state at a glance |
 | `bootstrap/user-data.sh` | First-boot setup: data volume, NVIDIA driver, Docker, NVIDIA Container Toolkit, containerd on `/data`, Tailscale, cache dirs |
@@ -69,7 +69,8 @@ Everything here was built and measured on a `g6.2xlarge` (NVIDIA L4) in
 ## Prerequisites
 
 - An AWS account with **GPU quota**: Service Quotas → EC2 → *Running On-Demand
-  G and VT instances* ≥ 8 vCPUs in your region. New accounts often start at 0 and get a first request denied;
+  G and VT instances* ≥ 8 vCPUs in your region (16 allows the `g6.4xlarge`
+  fallback). New accounts often start at 0 and get a first request denied;
   an appeal with a small, specific ask and a description of cost controls
   worked here.
   - On a new account, choose the **Paid** plan at sign-up: the Free plan
@@ -175,9 +176,8 @@ protection: a forgotten weekend would otherwise cost ~$50.
 5. **`InsufficientInstanceCapacity` on start.** A stopped instance gives its
    GPU back; starting needs a free one in the same Availability Zone (the
    disks pin it there). It happened once here and cleared after ~40 min.
-   `start.sh` keeps retrying the same type (`START_ROUNDS` attempts,
-   `ROUND_WAIT` s apart; ~30 min by default) rather than falling back to
-   another type.
+   `start.sh` retries and falls back to `g6.4xlarge` (same L4, cache stays
+   valid) and `g5.2xlarge` (A10G, cache rebuilds).
 6. **Docker's `data-root` doesn't move image layers.** Recent Docker stores
    them through containerd's image store under `/var/lib/containerd`. The
    32 GB image silently filled the root disk until containerd's own `root`
